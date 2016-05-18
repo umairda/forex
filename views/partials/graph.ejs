@@ -1,0 +1,23 @@
+<div>
+	<span class='inline'>
+		<div>Currency Pair:</div>
+		<select ng-model="pair" ng-options="pair for pair in pairs"></select>
+	</span>
+	<span class='inline'>
+		<div>Start Date: <span class='small'>(MM-DD-YYYY)</span></div>
+		<select ng-model="smonth" ng-options="smonth for smonth in months" ng-change="sdays=getDaysInMonth(smonth,syear)"></select>
+		<select ng-model="sday" ng-options="sday for sday in sdays"></select>
+		<select ng-model="syear" ng-options="syear for syear in years" ng-change="sdays=getDaysInMonth(smonth,syear)"></select>
+	</span>
+	<span class='inline'>
+		<div>End Date: <span class='small'>(MM-DD-YYYY)</span></div>
+		<select ng-model="emonth" ng-options="emonth for emonth in months" ng-change="edays=getDaysInMonth(emonth,eyear)"></select>
+		<select ng-model="eday" ng-options="eday for eday in edays"></select>
+		<select ng-model="eyear" ng-options="eyear for eyear in years" ng-change="edays=getDaysInMonth(emonth,eyear)"></select>
+	</span>
+	<span class='inline'>
+		<button ng-click="updateGraph()">Update</button>
+	</span>
+	
+  <angular-chart options="options" instance="instance"></angular-chart>
+</div>
