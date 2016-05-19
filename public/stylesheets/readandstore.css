@@ -1,0 +1,25 @@
+/* view1 css stylesheet */
+
+.div_c1 {
+	clear:both;
+}
+
+.div_c1 span, .fw {
+	float:left;
+	width:60px;
+	cursor:pointer;
+	border:solid 1px white;
+}
+
+.div_c1 span:hover, #update:hover {
+	border:dashed 1px black;
+}
+
+input.ng-empty, input.ng-not-empty {
+	width:50px;
+}
+
+.update {
+	font-size:1.5em;
+	text-align:center;
+}

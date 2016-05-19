@@ -37,7 +37,7 @@ var read_from_file = function(data, filename)
 			data["filename"] = filename;
 			data["columns"] = temp;
 		}
-		else if (i<10)
+		else if (i<101)
 		{		
 			var temp = {};
 			

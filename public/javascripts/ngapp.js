@@ -3,7 +3,9 @@
 angular.module('forex', [
   'ngRoute',
   'routeStyles',
-  'forex.graph'
+  'forex.graph',
+  'forex.readAndStore',
+  'forex.table'
 ])
 
 

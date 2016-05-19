@@ -15,7 +15,7 @@ router.get('/:pair', function(req, res, next) {
 			var data = {};
 			var result = require('./read_from_file.js')(data,filename);
 			result.on('close', function() {
-				res.send(JSON.stringify(data));
+				res.send(data);
 			});
 		}
 		else res.send("invalid pair: " + pair);

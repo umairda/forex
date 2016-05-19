@@ -6,17 +6,18 @@ var Ohlc = mongoose.model('Ohlc');
 var util = require('util');
 
 var isNumber = require('./is_number.js');
-var validate = require('./validate.js');
-
 
 router.get('/',function(req, res, next) { res.send("no pair specified"); });
 
 router.get('/:pair', function(req, res, next) {
+	console.log('STORING');
 	var messages = [];
 	var records_saved=0;
 	var pair = req.params.pair;
 	var filename = 'c:/sierrachart/data/'+pair+'.dly';
 	var query = req.query;
+	console.log("req.params="+JSON.stringify(req.params));
+	console.log("query="+JSON.stringify(query));
 	if (!query.hasOwnProperty("data")) res.send('Missing data');
 	else 
 	{	
@@ -69,8 +70,7 @@ router.get('/:pair', function(req, res, next) {
 							console.log(typeof data_obj[+i+1]);
 							if (typeof data_obj[+i+1] === 'undefined' && isNumber(+i+1)) {
 								console.log("END");
-								res.setHeader('Content-Type', 'application/json');
-								res.send(util.format("complete %d records added, messages: %s",records_saved, JSON.stringify(messages,null,3)));
+								res.json({status:util.format("complete %d records added",records_saved),messages:messages});
 							}
 						});			
 						
@@ -82,7 +82,7 @@ router.get('/:pair', function(req, res, next) {
 					}
 				});
 			}
-			else res.send("invalid pair: " + pair);
+			else res.json({status:"invalid pair: " + pair, messages:messages});
 		});
 	}
 });

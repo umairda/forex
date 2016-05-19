@@ -3,7 +3,6 @@
 var app = angular.module('forex.graph', ['ngRoute','routeStyles','angularChart'])
 
 .config(['$routeProvider', function($routeProvider) {
-  var temp = $routeProvider['$get'];
   $routeProvider.when('/graph', {
     templateUrl: '/partials/graph',
     controller: 'GraphCtrl',
@@ -11,15 +10,7 @@ var app = angular.module('forex.graph', ['ngRoute','routeStyles','angularChart']
   });
 }]);
 
-app.factory('readFromDB', function($http) {
-	return {
-		getGraphData: function(urlArray) {
-			return $http.get("/readfromdb/"+urlArray.join('/'));
-		}
-	};		
-});
-
-var GraphCtrl = function($scope,$timeout,readFromDB) {
+var GraphCtrl = function($scope,$timeout,dbHandler) {
 	var _this = this;
 	$scope.pairs = ['eurusd','gbpaud'];
 	$scope.months = [];
@@ -62,7 +53,7 @@ var GraphCtrl = function($scope,$timeout,readFromDB) {
 						$scope.syear, $scope.smonth, $scope.sday,
 						$scope.eyear, $scope.emonth, $scope.eday ];
 		
-		readFromDB.getGraphData(urlArray).then(function(response) {
+		dbHandler.read(urlArray).then(function(response) {
 
 			$scope.options = $scope.setGraphOptions([]);
 			
@@ -138,6 +129,6 @@ GraphCtrl.prototype.splitMongoDate = function(mongoDate) {
 	return obj;	
 };	
 
-GraphCtrl.$inject = ['$scope','$timeout','readFromDB'];
+GraphCtrl.$inject = ['$scope','$timeout','dbHandler'];
 
 app.controller('GraphCtrl',GraphCtrl);

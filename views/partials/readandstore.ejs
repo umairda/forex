@@ -1,0 +1,7 @@
+<div class='update'>{{update}}</div>
+<span class="fw"></span>
+<span class="fw" ng-repeat="c1 in currencies">{{c1}}</span>
+<div class="div_c1" ng-repeat="c1 in currencies">
+	<span>{{c1}}</span>
+	<span ng-repeat="c2 in currencies" ng-click="readandstore(c1,c2)">{{c1}}{{c2}}</span>
+</div>

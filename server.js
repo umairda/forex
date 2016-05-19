@@ -6,6 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var app = express();
 
+var mongoose = require('mongoose');
+require('./models/Ohlc');
+mongoose.connect('mongodb://localhost/forex');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -19,14 +23,20 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-var routes = require('./routes/index');
-app.use('/', routes);
+var index = require('./routes/index');
+app.use('/', index);
 
 var users = require('./routes/users');
 app.use('/users', users);
 
+var readfromdb = require('./routes/readfromdb');
+app.use('/readfromdb',readfromdb);
+
 var readfromfile = require('./routes/readfromfile');
 app.use('/readfromfile',readfromfile);
+
+var storeindb = require('./routes/storeindb');
+app.use('/storeindb',storeindb);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
