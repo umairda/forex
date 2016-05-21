@@ -9,16 +9,20 @@ router.get('/:pair', function(req, res, next) {
 	var filename = 'c:/sierrachart/data/'+pair+'.dly';
 	
 	require('fs').stat(filename,function(err,stats) {
-		if (err) console.log('Error: ',err.code);
+		if (err) 
+		{
+			console.log('Error: ',err.code);
+			res.json({success:0,message:err});
+		}
 		else if (stats.isFile()) 
 		{
 			var data = [];
 			var result = require('./read_from_file.js')(data,filename);
 			result.on('close', function() {
-				res.send(data);
+				res.json({success:1,data:data});
 			});
 		}
-		else res.send("invalid pair: " + pair);
+		else res.json({success:0,message:"invalid pair: " + pair});
 	});
 });
 
