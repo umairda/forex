@@ -1,18 +1,19 @@
 var isNumber = require('./is_number.js');
 var _trim = require('./_trim.js');
 
-var read_from_file = function(data, filename)
+var read_from_file = function(data_arr, filename)
 {
 	var lineReader = require('readline').createInterface({
 		input: require('fs').createReadStream(filename)
 	});
 
 	var i=0;
-	//var data = {};
+	var data = {};
 	var data_names = [];
 	var message = '';
 	var messages = [];
 	var util = require('util');
+	var segment = 0;
 	
 	function _record(formatted_string) {
 		messages.push(formatted_string);
@@ -37,8 +38,12 @@ var read_from_file = function(data, filename)
 			data["filename"] = filename;
 			data["columns"] = temp;
 		}
-		else if (i<101)
-		{		
+		else 
+		{	
+			if (!(i%300)) {
+				data = {};
+				segment++;
+			}
 			var temp = {};
 			
 			for (var k in data_names)
@@ -63,6 +68,7 @@ var read_from_file = function(data, filename)
 				}
 			}
 			data[i] = temp;
+			data_arr[segment] = data;
 		}
 		i++;
 	});

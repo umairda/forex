@@ -29,6 +29,12 @@ app.use('/', index);
 var users = require('./routes/users');
 app.use('/users', users);
 
+var getdifference = require('./routes/getdifference');
+app.use('/getdifference',getdifference);
+
+var getlast = require('./routes/getlast');
+app.use('/getlast',getlast);
+
 var readfromdb = require('./routes/readfromdb');
 app.use('/readfromdb',readfromdb);
 

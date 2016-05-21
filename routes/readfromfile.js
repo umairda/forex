@@ -12,7 +12,7 @@ router.get('/:pair', function(req, res, next) {
 		if (err) console.log('Error: ',err.code);
 		else if (stats.isFile()) 
 		{
-			var data = {};
+			var data = [];
 			var result = require('./read_from_file.js')(data,filename);
 			result.on('close', function() {
 				res.send(data);

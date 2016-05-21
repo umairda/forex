@@ -35,7 +35,7 @@ var GraphCtrl = function($scope,$timeout,dbHandler) {
 	};
 	
 	for (var i=1; i<13; i++) $scope.months.push(i);
-	for (var k=0; k<17; k++) $scope.years.push(1993+k);
+	for (var k=1990; k<2017; k++) $scope.years.push(k);
 
 	$scope.pair = $scope.pairs[0];
 	$scope.smonth = $scope.months[0];
