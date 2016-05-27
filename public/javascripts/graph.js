@@ -10,7 +10,7 @@ var app = angular.module('forex.graph', ['ngRoute','routeStyles','angularChart']
   });
 }]);
 
-var GraphCtrl = function($scope,$timeout,dbHandler) {
+var GraphCtrl = function($scope,$rootScope,$timeout,dbHandler,splitMongoDate) {
 	var _this = this;
 	$scope.pairs = ['eurusd','gbpaud'];
 	$scope.months = [];
@@ -30,10 +30,6 @@ var GraphCtrl = function($scope,$timeout,dbHandler) {
 		return _this.setGraphOptions(graphData);
 	};
 	
-	$scope.splitMongoDate = function(mongoDate) {
-		return _this.splitMongoDate(mongoDate);
-	};
-	
 	for (var i=1; i<13; i++) $scope.months.push(i);
 	for (var k=1990; k<2017; k++) $scope.years.push(k);
 
@@ -48,7 +44,6 @@ var GraphCtrl = function($scope,$timeout,dbHandler) {
 	$scope.eday = $scope.edays[0];
 	
 	$scope.updateGraph = function() {
-	
 		var urlArray = [$scope.pair, 
 						$scope.syear, $scope.smonth, $scope.sday,
 						$scope.eyear, $scope.emonth, $scope.eday ];
@@ -59,23 +54,26 @@ var GraphCtrl = function($scope,$timeout,dbHandler) {
 			
 			for (var i in response.data) {
 				var datum = $scope.deleteObjectKeys(response.data[i],['open','high','low','__v','openinterest','volume']);
-				datum.date = $scope.splitMongoDate(datum.date).ymd;
+				datum.date = splitMongoDate(datum.date).ymd;
 				$scope.options.data.push(datum);
 			}
-			/*
-			Promise.resolve($scope.instance).then(function(chart) {
-				console.log('resolving promise');
-				console.log(chart);
-				$scope.instance = chart;
-			});
-			*/
 		});
 	}
 	
 	//prevent updating graph before DOM is loaded
+	/*
 	$timeout(function() {
 		$scope.updateGraph();
 	},1);
+	*/
+	$scope.doOnce=0;
+	$rootScope.$on('loading:finish', function (){
+		if (!$scope.doOnce) {
+			console.log("loading:finish");
+			$scope.updateGraph();
+			$scope.doOnce++;
+		}
+	});
 }
 
 GraphCtrl.prototype.getDaysInMonth = function(month,year) {
@@ -111,24 +109,6 @@ GraphCtrl.prototype.setGraphOptions = function(graphData) {
 	};
 };
 
-GraphCtrl.prototype.splitMongoDate = function(mongoDate) {
-	var arr = mongoDate.split("T");
-	var ymd_arr = arr[0].split("-");
-	var hms_arr = arr[1].split(":");
-	var obj = {};
-	obj.ymd = arr[0];
-	obj.hms = arr[1];
-	obj.year = ymd_arr[0];
-	obj.month = ymd_arr[1];
-	obj.day = ymd_arr[2];
-	obj.hour = hms_arr[0];
-	obj.minute = hms_arr[1];
-	obj.second = hms_arr[2];
-	obj.ms = hms_arr[3];
-		
-	return obj;	
-};	
-
-GraphCtrl.$inject = ['$scope','$timeout','dbHandler'];
+GraphCtrl.$inject = ['$scope','$rootScope','$timeout','dbHandler','splitMongoDate'];
 
 app.controller('GraphCtrl',GraphCtrl);

@@ -1,9 +1,15 @@
 <span class="fw"></span>
 <span class="center fw" ng-repeat="c1 in currencies">{{c1}}</span>
-<div class="div_c1" ng-repeat="c1 in currencies">
+<div class="div_c1" ng-repeat="c1 in currencies" ng-class-odd="'odd'" ng-class-even="'even'">
 	<span>{{c1}}</span>
-	<span ng-repeat="c2 in currencies" ng-click="readandstore(c1,c2)" ng-init="getLast(c1,c2)">
-		<span class='center lastDate'>{{lastDate[c1+c2]}}</span>
+	<span 	title={{c1}}{{c2}}
+			ng-repeat="c2 in currencies" 
+			ng-click="readAndStore(c1,c2)" 
+			ng-init="pairs[c1][c2].setDates()">
+		<span class='center lastDate'>
+			<div class='green'>{{pairs[c1][c2].dbStartDate}}</div>
+			<div class='red'>{{pairs[c1][c2].dbEndDate}}</div>
+		</span>
 	</span>
 </div>
 <div class='center update'>{{update}}</div>

@@ -1,9 +1,3 @@
-/* view1 css stylesheet */
-
-.center {
-	text-align:center;
-}
-
 .div_c1 {
 	clear:both;
 }
@@ -24,8 +18,12 @@ input.ng-empty, input.ng-not-empty {
 }
 
 .lastDate {
-	font-size:0.5em;
+	font-size:0.7em;
 	vertical-align:center;
+}
+
+.odd {
+	background-color:#CCCCCC;
 }
 
 .update {

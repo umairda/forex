@@ -12,6 +12,12 @@ angular.module('forex')
 				url: "/getDifference/"+urlArray.join('/')
 			});
 		},
+		getDates: function(pair) {
+			return $http({
+				method: 'GET',
+				url: '/getDates/'+pair
+			});
+		},
 		getLast: function(pair) {
 			return $http({
 				method: 'GET',

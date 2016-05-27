@@ -1,0 +1,59 @@
+.red {
+	background-color:rgba(255,0,0,0.2);
+}
+
+.green {
+	background-color:rgba(0,255,0,0.2);
+}
+
+.gray {
+	background-color:rgba(200,200,200,1);
+}
+
+.center {
+	text-align:center;
+}
+
+.red_border {
+	border:solid 1px rgb(255,0,0);
+}
+
+.green_border {
+	border:solid 1px rgb(0,255,0);
+}
+
+.white_border {
+	border:solid 1px rgb(255,255,255);
+}
+
+.dark_red {
+	background-color:rgba(255,0,0,0.5);
+}
+
+.dark_green {
+	background-color:rgba(0,255,0,0.5);
+}
+
+.clearBoth {
+	clear:both;
+}
+
+.fh18 {
+	height:18px;
+}
+
+.fw60 {
+	width:60px;
+}
+
+.floatLeft {
+	float:left;
+}
+
+.inline {
+	display:inline;
+}
+
+.width100pct {
+	width:100%;
+}

@@ -10,6 +10,7 @@ var app = angular.module('forex.readAndStore', ['ngRoute','routeStyles'])
 	});
 }]);
 
+//Displays an update message for 5 seconds
 app.service('_update', function($timeout) {
 	return {
 		show: function($scope,v,value) {
@@ -21,64 +22,27 @@ app.service('_update', function($timeout) {
 	}
 });
 
-var ReadAndStoreCtrl = function($scope,$timeout,dbHandler,fileHandler,splitMongoDate,_update) {
-	var _this = this;
+var ReadAndStoreCtrl = function($scope,pairObjFactory,_update) {
 	
 	$scope.currencies = ['aud','cad','chf','eur','gbp','jpy','nzd','usd'];
-	$scope.lastDate = [];
+	$scope.pairs = [];
+	$scope.update = '';
 	
-	$scope.getLast = function(c1,c2) {
-		var pair = c1+c2;
-		dbHandler.getLast(pair).then(function(dbResponse) {
-			
-			console.log(dbResponse);
-			var date = 0;
-			if (dbResponse.data != null) {
-				date = splitMongoDate(dbResponse.data.date).ymd;
-				console.log(date);
-			}
-			$scope.lastDate[c1+c2]=date;
-			return date;
-		});
-	};
-	
-	$scope.readandstore = function(c1,c2) {
-		
-		var pair = c1+c2;
-		
-		if (c1 != c2) {		
-			fileHandler.read(pair).then(function (fileResponse) {
-				if (fileResponse.data != null) {
-					var promise = dbHandler.storeArray(pair,fileResponse.data,[]);
-					//console.log("typeof promise: ", typeof promise);
-					promise.then(function(dbResponse) {
-						console.log("db response data",dbResponse);
-						var recordsAdded=0;
-						for (var i=0; i<dbResponse.length; i++) {
-							recordsAdded+=+dbResponse[i].data.status.replace(/[a-z\s]/gi,'');
-						}
-						_update.show($scope,'update',recordsAdded+" records added");
-						$scope.getLast(c1,c2);
-					}, function(response) {
-						console.log("ERROR");
-						console.log(response);
-						console.log("config");
-						console.log(response.config);
-					});
-				}
-				else console.log(c1+c2+" fileResponse.data == null");
-			});
+	for (var i=0; i<$scope.currencies.length; i++) {
+		var c1 = $scope.currencies[i];
+		$scope.pairs[c1] = [];
+		for (var j=0; j<$scope.currencies.length; j++) {
+			var c2 = $scope.currencies[j];
+			$scope.pairs[c1][c2]=new pairObjFactory.pairObj(c1,c2,0);
+			$scope.pairs[c1][c2].setDates();
 		}
-		else console.log(c1+c2+" no data");
-	};
-	/*
-	$timeout(function() {
-		console.log($scope);		
-	},5000);
-	*/
+	}
 	
+	$scope.readAndStore = function(c1,c2) {
+		_update.show($scope,'update',$scope.pairs[c1][c2].readAndStore());
+	};
 };
 
-ReadAndStoreCtrl.$inject = ['$scope','$timeout','dbHandler','fileHandler','splitMongoDate','_update'];
+ReadAndStoreCtrl.$inject = ['$scope','pairObjFactory','_update'];
 
 app.controller('readAndStoreCtrl',ReadAndStoreCtrl);

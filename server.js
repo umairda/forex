@@ -35,6 +35,9 @@ app.use('/getdifference',getdifference);
 var getlast = require('./routes/getlast');
 app.use('/getlast',getlast);
 
+var getDates = require('./routes/getDates');
+app.use('/getdates',getDates);
+
 var readfromdb = require('./routes/readfromdb');
 app.use('/readfromdb',readfromdb);
 

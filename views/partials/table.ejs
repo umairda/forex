@@ -1,10 +1,23 @@
 <div>
-	Period:<input ng-model="period">days
-	<button ng-click="update(period)">Update</button>
+	Period:<input class="center" ng-model="period">days
+	<button ng-click="update()">Update</button>
 </div>
-<span class="fw"></span>
-<span class="fw" ng-repeat="c1 in currencies">{{c1}}</span>
-<div class="div_c1" ng-repeat="c1 in currencies">
-	<span>{{c1}}</span>
-	<span ng-repeat="c2 in currencies" ng-click="test2(c1,c2)">{{c1}}{{c2}}</span>
+<span class="fw60 fh18 floatLeft white_border"></span>
+<span class="center fw60 floatLeft white_border" ng-repeat="c1 in currencies">{{c1}}</span>
+<div class="clearBoth floatLeft fw60 width100pct" ng-repeat="c1 in currencies">
+	<span class='center floatLeft fw60 white_border'>{{c1}}</span>
+	<span 	title="{{c1}}{{c2}}"
+			ng-repeat="c2 in currencies" class='center fw60 floatLeft inline'
+			ng-init="getDifference(c1,c2)"
+			ng-class="{	red:pairs[c1][c2].difference<0,
+						green:pairs[c1][c2].difference>0,
+						gray:pairs[c1][c2].difference=='-',
+						green_border:pairs[c1][c2].greatestVsC1,
+						red_border:pairs[c1][c2].leastVsC1,
+						white_border:(!pairs[c1][c2].greatestVsC1 && !pairs[c1][c2].leastVsC1),
+						dark_red:pairs[c1][c2].least,
+						dark_green:pairs[c1][c2].greatest}">
+				{{pairs[c1][c2].difference}}
+	</span>
 </div>
+

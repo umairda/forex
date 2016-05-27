@@ -1,0 +1,11 @@
+<select ng-model="$ctrl.month" 
+		ng-options="month for month in $ctrl.months" 
+		ng-change="$ctrl.updateDaysInMonth()">
+</select>
+<select ng-model="$ctrl.day" 
+		ng-options="day for day in $ctrl.days">
+</select>
+<select ng-model="$ctrl.year" 
+		ng-options="year for year in $ctrl.years" 
+		ng-change="$ctrl.updateDaysInMonth()">
+</select>
