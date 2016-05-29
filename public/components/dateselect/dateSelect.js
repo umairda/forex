@@ -21,7 +21,7 @@ angular.module('forex').component('dateSelect', {
 		ctrl.month = ctrl.months[0];
 		ctrl.year = ctrl.years[0];
 		
-		ctrl.initDate = function(month,day,year) {
+		ctrl.setDate = function(month,day,year) {
 			ctrl.month = month;
 			ctrl.day = day;
 			ctrl.year = year;

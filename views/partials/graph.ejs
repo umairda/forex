@@ -1,19 +1,17 @@
 <div>
 	<span class='inline'>
 		<div>Currency Pair:</div>
-		<select ng-model="pair" ng-options="pair for pair in pairs"></select>
+		<pair-select 	pair="pair" 
+						db-start-date-obj="dbStartDateObj"
+						db-end-date-obj="dbEndDateObj"></pair-select>
 	</span>
 	<span class='inline'>
 		<div>Start Date: <span class='small'>(MM-DD-YYYY)</span></div>
-		<select ng-model="smonth" ng-options="smonth for smonth in months" ng-change="sdays=getDaysInMonth(smonth,syear)"></select>
-		<select ng-model="sday" ng-options="sday for sday in sdays"></select>
-		<select ng-model="syear" ng-options="syear for syear in years" ng-change="sdays=getDaysInMonth(smonth,syear)"></select>
+		<date-select month="smonth" day="sday" year="syear"></date-select>
 	</span>
 	<span class='inline'>
 		<div>End Date: <span class='small'>(MM-DD-YYYY)</span></div>
-		<select ng-model="emonth" ng-options="emonth for emonth in months" ng-change="edays=getDaysInMonth(emonth,eyear)"></select>
-		<select ng-model="eday" ng-options="eday for eday in edays"></select>
-		<select ng-model="eyear" ng-options="eyear for eyear in years" ng-change="edays=getDaysInMonth(emonth,eyear)"></select>
+		<date-select month="emonth" day="eday" year="eyear"></date-select>
 	</span>
 	<span class='inline'>
 		<button ng-click="updateGraph()">Update</button>
@@ -21,5 +19,3 @@
 	
   <angular-chart options="options" instance="instance"></angular-chart>
 </div>
-<date-select month="sctrl.month" day="sctrl.day" year="sctrl.year"></date-select>
-<date-select month="ectrl.month" day="ectrl.day" year="ectrl.year"></date-select>

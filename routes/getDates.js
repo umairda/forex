@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/',function(req, res, next) { res.send("no pair specified"); });
 
 router.get('/:pair', function(req, res, next) {
-	var pair = req.params.pair;
+	var pair = req.params.pair.toLowerCase();
 	Ohlc.find({instrument:pair})
 		.sort('date')
 		.select('instrument date -_id')

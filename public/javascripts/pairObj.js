@@ -3,7 +3,39 @@
 var app = angular.module('forex');
 
 app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDate) {
-	var pairObj = function(c1,c2,period) {
+	var pairObj = function() { //params: c1,c2; c1,c2,period; pair; pair, period;
+		var c1='eur', c2='usd', pair='eurusd', period=60;
+		
+		//console.log('arguments: ',arguments);
+		//console.log('arguments.length: ',arguments.length);
+		
+		switch(arguments.length) {
+			case 1: 
+				pair=arguments[0]; 
+				c1=pair.substr(0,3);
+				c2=pair.substr(3,3);
+				break;
+			case 2: 
+				if (angular.isNumber(arguments[1])) {
+					pair=arguments[0];
+					period=arguments[1];
+					c1=pair.substr(0,3);
+					c2=pair.substr(3,3);
+				}
+				else {
+					c1=arguments[0];
+					c2=arguments[1];
+					pair=c1+c2;
+				}
+				break;
+			case 3: 
+				c1=arguments[0]; 
+				c2=arguments[1]; 
+				pair=c1+c2;
+				period=arguments[2]; 
+				break;			
+		};
+		
 		this.c1 = c1;
 		this.c2 = c2;
 		this.period = period;
@@ -71,13 +103,11 @@ app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDat
 		
 		this.setDates = function() {
 			var _this = this;
-			dbHandler.getDates(this.c1+this.c2).then(function(dbResponse) {
-				console.log(dbResponse);
+			return dbHandler.getDates(_this.c1+_this.c2).then(function(dbResponse) {
 				var start = 0, end = 0;
 				if (dbResponse.data && dbResponse.data.start && dbResponse.data.end) {
 					start = splitMongoDate(dbResponse.data.start.date).ymd;
 					end = splitMongoDate(dbResponse.data.end.date).ymd;
-					console.log(start,end);
 				}
 				_this.dbStartDate=start;
 				_this.dbEndDate=end;
