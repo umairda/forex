@@ -8,7 +8,9 @@ var app = express();
 
 var mongoose = require('mongoose');
 require('./models/Ohlc');
-mongoose.connect('mongodb://localhost/forex');
+//mongoose.connect('mongodb://localhost/forex');
+require('./models/connection');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
