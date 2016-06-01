@@ -39,7 +39,9 @@ var ReadAndStoreCtrl = function($scope,pairObjFactory,_update) {
 	}
 	
 	$scope.readAndStore = function(c1,c2) {
-		_update.show($scope,'update',$scope.pairs[c1][c2].readAndStore());
+		$scope.pairs[c1][c2].readAndStore().then(function(status) {
+			_update.show($scope,'update',status);
+		});
 	};
 };
 

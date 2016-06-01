@@ -2,12 +2,10 @@
 
 describe('dbHandler', function () {
   
-  beforeEach(module('forex'));
+  beforeEach(module('forex.factories'));
 
-  beforeEach(module(function ($provide) {
-    $provide.value('oneOfMyOtherServicesStub', {
-        someVariable: 1
-    });
+  beforeEach(module(function ($http,$q) {
+	  
   }));
 
   it('can get an instance of my factory', inject(function(dbHandler) {

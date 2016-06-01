@@ -1,9 +1,8 @@
 'use strict'
 
-// < one way binding
-// @ input is a string
-// & outputs
-// = two way binding
+// @ pass in values as strings (one way)
+// & external functions
+// = two way binding for external objects
 
 angular.module('forex').component('dateSelect', {
 	bindings: {

@@ -11,10 +11,20 @@
     "debug": "~2.2.0",
     "ejs": "~2.3.3",
     "express": "~4.13.1",
-	"moment": "latest",
-	"mongoose": "latest",
+    "gulp-open": "^2.0.0",
+    "karma": "^0.13.22",
+    "moment": "latest",
+    "mongoose": "latest",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
-	"util":"latest"
+    "util": "latest"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "jshint": "^2.9.2",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-requirejs": "^1.0.0"
   }
 }
