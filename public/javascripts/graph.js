@@ -17,10 +17,6 @@ var GraphCtrl = function($injector,$scope,$rootScope,$timeout,dbHandler,splitMon
 		return _this.deleteObjectKeys(obj,keysToDelete);
 	};
 	
-	$scope.setGraphOptions = function(graphData) {
-		return _this.setGraphOptions(graphData);
-	};
-	
 	$scope.updateGraph = function() {
 		var urlArray = [$scope.pair, 
 						$scope.syear, $scope.smonth, $scope.sday,
@@ -30,16 +26,47 @@ var GraphCtrl = function($injector,$scope,$rootScope,$timeout,dbHandler,splitMon
 		
 		dbHandler.read(urlArray).then(function(response) {
 			console.log(response);
-			$scope.options = $scope.setGraphOptions([]);
-			
+			$scope.ohlc = [];
 			for (var i in response.data) {
-				var datum = $scope.deleteObjectKeys(response.data[i],['open','high','low','__v','openinterest','volume']);
-				datum.date = splitMongoDate(datum.date).ymd;
-				$scope.options.data.push(datum);
+				//var datum = $scope.deleteObjectKeys(response.data[i],['__v','openinterest','volume']);
+				//datum.date = (new Date(datum.date)).getTime();
+				var datum = [];
+				datum[0] = new Date(response.data[i].date);
+				datum[1] = response.data[i].open;
+				datum[2] = response.data[i].high;
+				datum[3] = response.data[i].low;
+				datum[4] = response.data[i].close;
+				
+				$scope.ohlc.push(datum);
 			}
+		}).finally(function() {
+			console.log($scope.ohlc);
+			var title = $scope.pair+' '+[$scope.syear,$scope.smonth,$scope.sday].join('/')+'-'+[$scope.eyear,$scope.emonth,$scope.eday].join('/');
+			var groupingUnits = [	['week',[1]],
+									['month',[1,2,3,4,6]]];
+			$scope.chartData = {
+                   minTickInterval:5,
+					title: {
+                        text: title,
+                    },
+                    xAxis: {
+                        tickInterval:5,
+						title:'date'
+                    },
+					yAxis: {
+						title:'exchange rate'
+					},
+                    series: [{
+                        data: $scope.ohlc,
+						name: $scope.pair,
+						type: 'candlestick',
+						dataGrouping: { units: groupingUnits },
+                    }],
+            };
 		});
 	}
-	
+	console.log($scope);
+				
 	$scope.$watch('dbStartDateObj',function(newValue,oldValue) {
 		if (typeof newValue != 'undefined') $scope.updateDates();
 	});
@@ -73,22 +100,6 @@ GraphCtrl.prototype.deleteObjectKeys = function(obj,keysToDelete) {
 	}
 	return obj;
 }
-
-GraphCtrl.prototype.setGraphOptions = function(graphData) {
-	return {
-		data: graphData,
-		dimensions: {
-						"date": {
-							axis: 'x',
-							type: 'line'
-						},
-						"close": {
-						axis: 'y'
-						}
-					},
-		labels: [1993,1994,1995,1996,1997,1998,1999,2000],
-	};
-};
 
 GraphCtrl.$inject = ['$injector','$scope','$rootScope','$timeout','dbHandler','splitMongoDate'];
 

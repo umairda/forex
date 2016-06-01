@@ -1,6 +1,6 @@
 'use strict'
 
-var app = angular.module('forex');
+var app = angular.module('forex.factories');
 
 app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDate) {
 	var pairObj = function() { //params: c1,c2; c1,c2,period; pair; pair, period;

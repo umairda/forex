@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('forex')
+angular.module('forex.factories')
 
 .factory('dbHandler', function($http, $q) {
 	var obj = {

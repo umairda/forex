@@ -93,8 +93,8 @@ var TableCtrl = function($scope, $rootScope, dbHandler, pairObjFactory) {
 			for (var j=0; j<$scope.currencies.length; j++) {
 				var c2 = $scope.currencies[j];
 				if (c1!=c2) {
-					pairs[c1][c2].period = $scope.period;
-					pairs[c1][c2].setDifference();
+					$scope.pairs[c1][c2].period = $scope.period;
+					$scope.pairs[c1][c2].setDifference();
 				}
 			}
 		}

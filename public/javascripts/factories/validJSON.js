@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('forex')
+angular.module('forex.factories')
 
 .factory('validJSON', function($http) {
 	return {

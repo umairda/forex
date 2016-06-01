@@ -1,6 +1,6 @@
 'use strict'
 
-var app = angular.module('forex');
+var app = angular.module('forex.factories');
 
 app.factory('httpInterceptor', ['$q', '$rootScope',
     function ($q, $rootScope) {
