@@ -1,11 +1,12 @@
-/// Bring Mongoose into the app 
+// Bring Mongoose into the app 
 var mongoose = require( 'mongoose' ); 
 
 // Get Mongo login credentials
 var options = require('./options.js');
-console.log(options);
+
 // Build the connection string 
-var dbURI = 'mongodb://'+options.mongoConfig.user+':'+options.mongoConfig.pass+'@localhost/forex'; 
+if (options.mongoConfig.user && options.mongoConfig.pass) var dbURI = 'mongodb://'+options.mongoConfig.user+':'+options.mongoConfig.pass+'@localhost/forex'; 
+else dbURI = 'mongodb://localhost/forex'; 
 
 // Create the database connection 
 mongoose.connect(dbURI); 
