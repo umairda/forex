@@ -4,6 +4,7 @@ var moment = require('moment');
 var mongoose = require('mongoose');
 var Ohlc = mongoose.model('Ohlc');
 var util = require('util');
+var dataFilesPath = require('./dataFilesPath');
 
 var isNumber = require('./is_number.js');
 
@@ -14,7 +15,7 @@ router.get('/:pair', function(req, res, next) {
 	var messages = [];
 	var records_saved=0;
 	var pair = req.params.pair;
-	var filename = 'c:/sierrachart/data/'+pair+'.dly';
+	var filename = dataFilesPath.value+pair+'.dly';
 	var query = req.query;
 	console.log("req.params="+JSON.stringify(req.params));
 	console.log("query="+JSON.stringify(query));

@@ -8,7 +8,7 @@ var app = express();
 
 var mongoose = require('mongoose');
 require('./models/Ohlc');
-//mongoose.connect('mongodb://localhost/forex');
+///mongoose.connect('mongodb://localhost/forex');
 require('./models/connection');
 
 

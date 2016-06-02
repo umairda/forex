@@ -1,3 +1,4 @@
+//
 var mongoose = require('mongoose');
 
 var OhlcSchema = new mongoose.Schema({

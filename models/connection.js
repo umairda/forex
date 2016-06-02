@@ -1,4 +1,4 @@
-// Bring Mongoose into the app 
+/// Bring Mongoose into the app 
 var mongoose = require( 'mongoose' ); 
 
 // Get Mongo login credentials
