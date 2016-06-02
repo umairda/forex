@@ -1,1 +1,1 @@
-exports.value = "/opt/bitnami/apps/forex/sierrachart/data/";
+exports.value = "sierrachart/data/";
