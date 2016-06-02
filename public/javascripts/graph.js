@@ -12,6 +12,8 @@ var app = angular.module('forex.graph', ['ngRoute','routeStyles','angularChart']
 
 var GraphCtrl = function($injector,$scope,$rootScope,$timeout,dbHandler,splitMongoDate) {
 	var _this = this;
+	$scope.start = {};
+	$scope.end = {};
 
 	$scope.deleteObjectKeys = function(obj,keysToDelete) {
 		return _this.deleteObjectKeys(obj,keysToDelete);
@@ -65,13 +67,15 @@ var GraphCtrl = function($injector,$scope,$rootScope,$timeout,dbHandler,splitMon
             };
 		});
 	}
-	console.log($scope);
 				
 	$scope.$watch('dbStartDateObj',function(newValue,oldValue) {
 		if (typeof newValue != 'undefined') $scope.updateDates();
 	});
 	
 	$scope.updateDates = function() {
+		
+		console.log($scope);
+		
 		$scope.smonth = $scope.dbStartDateObj.getMonth()+1;
 		$scope.sday   = $scope.dbStartDateObj.getDate();
 		$scope.syear  = $scope.dbStartDateObj.getFullYear();
@@ -79,18 +83,22 @@ var GraphCtrl = function($injector,$scope,$rootScope,$timeout,dbHandler,splitMon
 		$scope.emonth = $scope.dbEndDateObj.getMonth()+1;
 		$scope.eday   = $scope.dbEndDateObj.getDate();
 		$scope.eyear  = $scope.dbEndDateObj.getFullYear();
-	};
-
-	var doOnce=0;
-	
-	$rootScope.$on('loading:finish', function (){
-		console.log("loading:finish");
 		
-		if (!doOnce) {
-			$scope.updateGraph();
-			doOnce++;
-		}
-	});
+		$scope.start.setMinDate($scope.dbStartDateObj).finally(function() {
+			$scope.start.setMaxDate($scope.dbEndDateObj).finally(function() {
+				$scope.end.setMinDate($scope.dbStartDateObj).finally(function() {
+					$scope.end.setMaxDate($scope.dbEndDateObj).finally(function() {
+						var endDateObj = $scope.dbStartDateObj;
+						endDateObj.setFullYear($scope.dbStartDateObj.getFullYear()+1);
+						$scope.end.setDate(endDateObj).then(function() {
+							$scope.updateGraph();
+						});
+					});
+				});
+			});
+		});
+		
+	};
 }
 
 GraphCtrl.prototype.deleteObjectKeys = function(obj,keysToDelete) {

@@ -4,8 +4,8 @@ var pairSelectCtrl = function(pairObjFactory) {
 		var ctrl = this;
 		ctrl.currencies=['AUD','CAD','CHF','EUR','GBP','JPY','NZD','USD'];
 		ctrl.pairs=[];
-		for (var i=0; i<ctrl.currencies.length-1; i++) {
-			for (var j=0; j<ctrl.currencies.length-1; j++) {
+		for (var i=0; i<ctrl.currencies.length; i++) {
+			for (var j=0; j<ctrl.currencies.length; j++) {
 				if (i != j) {
 					ctrl.pairs.push(ctrl.currencies[i]+ctrl.currencies[j]);
 				}
