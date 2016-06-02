@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"forex.ohlcs"},{"v":1,"unique":true,"key":{"instrument":1,"date":1},"name":"instrument_1_date_1","ns":"forex.ohlcs","background":true}]}
