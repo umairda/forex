@@ -24,7 +24,10 @@ angular.module('forex.factories')
 				url: "/getLast/"+pair
 			});
 		},
-		read: function(urlArray) {
+		read: function(pair) {
+			return $http.get("/readfromdb/"+pair);
+		},
+		readDatesSpecified: function(urlArray) {
 			return $http.get("/readfromdb/"+urlArray.join('/'));
 		},
 		store: function(pair,_data) {

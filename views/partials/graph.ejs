@@ -1,20 +1,7 @@
 <div>
 	<span class='inline'>
 		<div>Currency Pair:</div>
-		<pair-select 	pair="pair" 
-						db-start-date-obj="dbStartDateObj"
-						db-end-date-obj="dbEndDateObj"></pair-select>
-	</span>
-	<span class='inline'>
-		<div>Start Date: <span class='small'>(MM-DD-YYYY)</span></div>
-		<date-select month="smonth" day="sday" year="syear" control="start"></date-select>
-	</span>
-	<span class='inline'>
-		<div>End Date: <span class='small'>(MM-DD-YYYY)</span></div>
-		<date-select month="emonth" day="eday" year="eyear" control="end"></date-select>
-	</span>
-	<span class='inline'>
-		<button ng-click="updateGraph()">Update</button>
+		<pair-select pair="pair"></pair-select>
 	</span>
 	
   <chart value="chartData" type="candlestick" chart-obj="chartObj" control="graphControl"></chart>

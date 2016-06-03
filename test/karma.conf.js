@@ -17,8 +17,8 @@ module.exports = function(config) {
       'public/bower_components/angular-resource/angular-resource.js',
       'pubic/bower_components/angular-mocks/angular-mocks.js',
 	  'public/javascripts/*.js',
-	  'test/unit/*.js',
-      'test/test-main.js',
+	  'public/javascripts/factories/*.js',
+	  'test/unit/fileHandler.spec.js',
       {pattern: '.', included: false}
     ],
 

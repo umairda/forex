@@ -30,8 +30,8 @@ var pairSelectCtrl = function(pairObjFactory) {
 angular.module('forex').component('pairSelect', {
 	bindings: {
 		pair: '=',
-		dbStartDateObj: '=',
-		dbEndDateObj: '='
+		dbStartDateObj: '=?',
+		dbEndDateObj: '=?'
 	},
 	controller: pairSelectCtrl,
 	templateUrl: '/components/pairselect/pair-select.html'

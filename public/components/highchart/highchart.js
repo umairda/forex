@@ -13,11 +13,9 @@ angular.module('forex').directive('chart', function(dbHandler) {
         replace: true,
         link: function($scope, $element, $attrs) {
 			
-			$scope.control.updateChartData = function(urlArray) {
-				console.log(urlArray);
-		
-				dbHandler.read(urlArray).then(function(response) {
-					//console.log(response);
+			$scope.control.updateChartData = function(pair) {
+				dbHandler.read(pair).then(function(response) {
+					delete $scope.ohlc;
 					$scope.ohlc = [];
 					for (var i in response.data) {
 						var datum = [];
@@ -31,9 +29,9 @@ angular.module('forex').directive('chart', function(dbHandler) {
 						$scope.ohlc.push(datum);
 					}
 				}).finally(function() {
-					console.log($scope.ohlc);
-					var title = urlArray[0]+' '+urlArray.slice(1,4).join('/')+'-'+urlArray.slice(4,7).join('/');
-
+					delete $scope.chartData;
+					var title = pair;
+					
 					$scope.chartData = {
 						title: {
 							text: title,
@@ -57,7 +55,7 @@ angular.module('forex').directive('chart', function(dbHandler) {
 						},
 						series: [{
 							data: $scope.ohlc,
-							name: urlArray[0],
+							name: pair,
 							type: 'candlestick',
 							dataGrouping: {
 									units:[	['day',[1]],['week',[1]],['month',[1]],['year',[1]]	]
@@ -69,9 +67,9 @@ angular.module('forex').directive('chart', function(dbHandler) {
 			
             //Update when charts data changes
             $scope.$watch('chartData', function(value) {
-                if (!value)
+				if (!value)
                     return;
-
+				
                 // Initiate the chartData.chart if it doesn't exist yet
                 $scope.chartData.chart = $scope.chartData.chart || {};
 
