@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('forex.graph', ['ngRoute','routeStyles','angularChart'])
+var app = angular.module('forex.graph', ['ngRoute','routeStyles'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/graph', {
@@ -10,70 +10,23 @@ var app = angular.module('forex.graph', ['ngRoute','routeStyles','angularChart']
   });
 }]);
 
-var GraphCtrl = function($injector,$scope,$rootScope,$timeout,dbHandler,splitMongoDate) {
+var GraphCtrl = function($scope) {
 	var _this = this;
 	$scope.start = {};
 	$scope.end = {};
-
-	$scope.deleteObjectKeys = function(obj,keysToDelete) {
-		return _this.deleteObjectKeys(obj,keysToDelete);
-	};
+	$scope.graphControl = {};
 	
 	$scope.updateGraph = function() {
 		var urlArray = [$scope.pair, 
 						$scope.syear, $scope.smonth, $scope.sday,
 						$scope.eyear, $scope.emonth, $scope.eday ];
 		
-		console.log(urlArray);
-		
-		dbHandler.read(urlArray).then(function(response) {
-			console.log(response);
-			$scope.ohlc = [];
-			for (var i in response.data) {
-				//var datum = $scope.deleteObjectKeys(response.data[i],['__v','openinterest','volume']);
-				//datum.date = (new Date(datum.date)).getTime();
-				var datum = [];
-				datum[0] = new Date(response.data[i].date);
-				datum[1] = response.data[i].open;
-				datum[2] = response.data[i].high;
-				datum[3] = response.data[i].low;
-				datum[4] = response.data[i].close;
-				
-				$scope.ohlc.push(datum);
-			}
-		}).finally(function() {
-			console.log($scope.ohlc);
-			var title = $scope.pair+' '+[$scope.syear,$scope.smonth,$scope.sday].join('/')+'-'+[$scope.eyear,$scope.emonth,$scope.eday].join('/');
-			var groupingUnits = [	['week',[1]],
-									['month',[1,2,3,4,6]]];
-			$scope.chartData = {
-                   minTickInterval:5,
-					title: {
-                        text: title,
-                    },
-                    xAxis: {
-                        tickInterval:5,
-						title:'date'
-                    },
-					yAxis: {
-						title:'exchange rate'
-					},
-                    series: [{
-                        data: $scope.ohlc,
-						name: $scope.pair,
-						type: 'candlestick',
-						dataGrouping: { units: groupingUnits },
-                    }],
-            };
-		});
+		//calls function to redraw chart in highchart directive
+		$scope.graphControl.updateChartData(urlArray);
 	}
-				
-	$scope.$watch('dbStartDateObj',function(newValue,oldValue) {
-		if (typeof newValue != 'undefined') $scope.updateDates();
-	});
 	
+	//updates absolute start and end dates based on available data
 	$scope.updateDates = function() {
-		
 		console.log($scope);
 		
 		$scope.smonth = $scope.dbStartDateObj.getMonth()+1;
@@ -84,31 +37,29 @@ var GraphCtrl = function($injector,$scope,$rootScope,$timeout,dbHandler,splitMon
 		$scope.eday   = $scope.dbEndDateObj.getDate();
 		$scope.eyear  = $scope.dbEndDateObj.getFullYear();
 		
+		//prevent user from selecting date earlier than absolute start date or later than absolute end date
 		$scope.start.setMinDate($scope.dbStartDateObj).finally(function() {
 			$scope.start.setMaxDate($scope.dbEndDateObj).finally(function() {
 				$scope.end.setMinDate($scope.dbStartDateObj).finally(function() {
 					$scope.end.setMaxDate($scope.dbEndDateObj).finally(function() {
-						var endDateObj = $scope.dbStartDateObj;
-						endDateObj.setFullYear($scope.dbStartDateObj.getFullYear()+1);
-						$scope.end.setDate(endDateObj).then(function() {
+						//var startDateObj = $scope.dbEndDateObj;
+						
+						//initially graph displays past 1 year of data
+						//startDateObj.setFullYear($scope.dbEndDateObj.getFullYear()-1);
+						//$scope.start.setDate(startDateObj).then(function() {
 							$scope.updateGraph();
-						});
+						//});
 					});
 				});
 			});
 		});
-		
 	};
+	
+	$scope.$watch('dbStartDateObj',function(newValue,oldValue) {
+		if (typeof newValue != 'undefined') $scope.updateDates();
+	});
 }
 
-GraphCtrl.prototype.deleteObjectKeys = function(obj,keysToDelete) {
-	for (var i in keysToDelete) 
-	{	
-		delete obj[keysToDelete[i]];
-	}
-	return obj;
-}
-
-GraphCtrl.$inject = ['$injector','$scope','$rootScope','$timeout','dbHandler','splitMongoDate'];
+GraphCtrl.$inject = ['$scope'];
 
 app.controller('GraphCtrl',GraphCtrl);

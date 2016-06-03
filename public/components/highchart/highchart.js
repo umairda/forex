@@ -1,17 +1,72 @@
 'use strict'
 
-angular.module('forex').directive('chart', function() {
+angular.module('forex').directive('chart', function(dbHandler) {
     return {
         restrict: 'E',
         template: '<div></div>',
         scope: {
             chartData: "=value",
-            chartObj: "=?"
+            chartObj: "=?",
+			control: "=?"
         },
         transclude: true,
         replace: true,
         link: function($scope, $element, $attrs) {
+			
+			$scope.control.updateChartData = function(urlArray) {
+				console.log(urlArray);
+		
+				dbHandler.read(urlArray).then(function(response) {
+					//console.log(response);
+					$scope.ohlc = [];
+					for (var i in response.data) {
+						var datum = [];
+						var dateObj = new Date(response.data[i].date);
+						datum[0] = dateObj;
+						datum[1] = response.data[i].open;
+						datum[2] = response.data[i].high;
+						datum[3] = response.data[i].low;
+						datum[4] = response.data[i].close;
+				
+						$scope.ohlc.push(datum);
+					}
+				}).finally(function() {
+					console.log($scope.ohlc);
+					var title = urlArray[0]+' '+urlArray.slice(1,4).join('/')+'-'+urlArray.slice(4,7).join('/');
 
+					$scope.chartData = {
+						title: {
+							text: title,
+						},
+						xAxis: {
+							type: 'datetime',
+							dateTimeLabelFormats: {
+								second: '%Y-%m-%d<br/>%H:%M:%S',
+								minute: '%Y-%m-%d<br/>%H:%M',
+								hour: '%Y-%m-%d<br/>%H:%M',
+								day: '%Y<br/>%m-%d',
+								week: '%Y<br/>%m-%d',
+								month: '%Y-%m',
+								year: '%Y'
+							},
+							minRange:1000*3600,
+							title:'date',
+						},
+						yAxis: {
+							title:'exchange rate'
+						},
+						series: [{
+							data: $scope.ohlc,
+							name: urlArray[0],
+							type: 'candlestick',
+							dataGrouping: {
+									units:[	['day',[1]],['week',[1]],['month',[1]],['year',[1]]	]
+							}
+						}],
+					};
+				});
+			};
+			
             //Update when charts data changes
             $scope.$watch('chartData', function(value) {
                 if (!value)
@@ -29,11 +84,10 @@ angular.module('forex').directive('chart', function() {
                 if ($attrs.width)
                     $scope.chartData.chart.width = $scope.chartData.chart.type || $attrs.width;
 
-                $scope.chartObj = new Highcharts.Chart($scope.chartData);
+                $scope.chartObj = new Highcharts.StockChart($scope.chartData);
             });
         }
     };
-
 });
 	
 
