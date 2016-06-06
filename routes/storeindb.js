@@ -8,9 +8,9 @@ var dataFilesPath = require('./dataFilesPath');
 
 var isNumber = require('./is_number.js');
 
-router.get('/',function(req, res, next) { res.send("no pair specified"); });
+router.post('/',function(req, res, next) { res.send("no pair specified"); });
 
-router.get('/:pair', function(req, res, next) {
+router.post('/:pair', function(req, res, next) {
 	console.log('STORING');
 	var messages = [];
 	var records_saved=0;

@@ -32,7 +32,7 @@ angular.module('forex.factories')
 		},
 		store: function(pair,_data) {
 			return $http({
-				method: 'GET',
+				method: 'POST',
 				url: "/storeindb/"+pair,
 				params: {data: _data}
 			});

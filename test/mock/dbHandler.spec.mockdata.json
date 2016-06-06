@@ -1,0 +1,35 @@
+{
+	"getDifference": {
+		"sdoc": {
+			"instrument": "eurusd",
+			"date": "2015-12-31T00:00:00.000Z",
+			"open": 1.0932,
+			"high": 1.09372,
+			"low": 1.085295,
+			"close": 1.086545,
+			"openinterest": 130036,
+			"volume": 130036
+		},
+		"edoc": {
+			"instrument": "eurusd",
+			"date": "2015-12-17T00:00:00.000Z",
+			"open": 1.0911551,
+			"high": 1.091435,
+			"low": 1.0802701,
+			"close": 1.08259,
+			"openinterest": 310947,
+			"volume": 310947
+		},
+		"pct_diff": "0.37"
+	},
+	"getDates": {
+		"start": {
+			"instrument": "eurusd",
+			"date": "1993-05-11T00:00:00.000Z"
+		},
+		"end": {
+			"instrument": "eurusd",
+			"date": "2016-05-27T00:00:00.000Z"
+		}
+	}
+}

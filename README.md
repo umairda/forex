@@ -8,8 +8,8 @@ Front-end routes:
 -green/red outlines highlight best/worst performing currency against a single pair
 
 /#/readandstore
--Daily OHLC data is pulled from Sierra Chart files located in "c:\sierrachart\data\*.dly" and stored in MongoDB "forex" database, under the "ohlcs" collections
--Sierra Chart data files are included in (repository root)\sierrachart\data
+-Daily OHLC data is pulled from Sierra Chart files and stored in MongoDB "forex" database, under the "ohlcs" collections
+-Sierra Chart data files are included in (repository root)\sierrachart\data, the data file path can be specified in routes\dataFilesPath.js
 -Shows earliest ohlc data date in file (green) and most recent ohlc data date in file (red)
 -Can retrieve most recent data by clicking on each pair
 
@@ -33,4 +33,4 @@ Back-end routes:
 -data is read from c:\sierrachart\data\{pair}.dly file, returns json object with data
 
 /storeindb/{pair}
--data is stored in 
+-data is stored in MongoDB database
