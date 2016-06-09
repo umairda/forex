@@ -5,21 +5,21 @@ var app = angular.module('forex.graph', ['ngRoute','routeStyles'])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/graph', {
     templateUrl: '/partials/graph',
-    controller: 'GraphCtrl',
+    controller: 'GraphController',
 	css: '/stylesheets/graph.css'
   });
 }]);
 
-var GraphCtrl = function($scope) {
-	var _this = this;
-	$scope.graphControl = {};
+var GraphController = function($scope) {
+	var vm = this;
 	
-	$scope.$watch('pair',function(newValue,oldValue) {
-		console.log('pair changed');
-		if (typeof newValue != 'undefined') $scope.graphControl.updateChartData($scope.pair);
+	$scope.$watch(function watchPair(scope) {
+		return vm.pair;
+	},function(newValue,oldValue) {
+		if (typeof newValue != 'undefined') vm.updateChartData(newValue);
 	});
 }
 
-GraphCtrl.$inject = ['$scope'];
+GraphController.$inject = ['$scope'];
 
-app.controller('GraphCtrl',GraphCtrl);
+app.controller('GraphController',GraphController);

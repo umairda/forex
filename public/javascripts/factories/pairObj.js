@@ -4,7 +4,7 @@ var app = angular.module('forex.factories');
 
 app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDate) {
 	var pairObj = function() { //params: c1,c2; c1,c2,period; pair; pair, period;
-		var c1='eur', c2='usd', pair='eurusd', period=60;
+	var c1='eur', c2='usd', pair='eurusd', period=60;
 		
 		//console.log('arguments: ',arguments);
 		//console.log('arguments.length: ',arguments.length);
@@ -38,6 +38,7 @@ app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDat
 		
 		this.c1 = c1;
 		this.c2 = c2;
+		this.pair = pair;
 		this.period = period;
 		this.difference = '-';
 		
@@ -50,6 +51,15 @@ app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDat
 		
 		this.dbStartDate = 0;
 		this.dbEndDate = 0;
+		
+		/* I thought about breaking up readAndStore into separate "read" and "store" functions for easier testing
+ 		this.read = function() {
+			var _this = this;
+			var c1 = this.c1;
+			var c2 = this.c2;
+			var pair = c1+c2;
+		}
+		*/
 		
 		this.readAndStore = function() {
 			var _this = this;
@@ -120,7 +130,7 @@ app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDat
 				var date = new Date();
 				var _this = this;
 				date = [date.getYear(),date.getMonth(),date.getDay()].join('-');
-				dbHandler.getDifference(this.c1+this.c2,new Date(),this.period).then(function(response) {
+				return dbHandler.getDifference(this.c1+this.c2,new Date(),this.period).then(function(response) {
 					if (response && response.data.pct_diff) {
 						_this.difference=response.data.pct_diff;
 					}

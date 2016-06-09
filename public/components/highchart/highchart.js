@@ -14,6 +14,7 @@ angular.module('forex').directive('chart', function(dbHandler) {
         link: function($scope, $element, $attrs) {
 			
 			$scope.control.updateChartData = function(pair) {
+				console.log('updateChartData',pair);
 				dbHandler.read(pair).then(function(response) {
 					delete $scope.ohlc;
 					$scope.ohlc = [];

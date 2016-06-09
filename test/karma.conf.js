@@ -28,10 +28,7 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-		'unit/graph.spec.js',
-		'unit/pairObj.spec.js',
 		'unit/readandstore.spec.js',
-		'unit/table.spec.js'
     ],
 
 

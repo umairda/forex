@@ -1,8 +1,9 @@
-<div>
+<div ng-controller="GraphController as GraphCtrl">
 	<span class='inline'>
 		<div>Currency Pair:</div>
-		<pair-select pair="pair"></pair-select>
+		<pair-select pair="GraphCtrl.pair"></pair-select>
 	</span>
 	
-  <chart value="chartData" type="candlestick" chart-obj="chartObj" control="graphControl"></chart>
+  <chart value="GraphCtrl.chartData" 
+		 type="candlestick" chart-obj="GraphCtrl.chartObj" control="GraphCtrl"></chart>
 </div>
