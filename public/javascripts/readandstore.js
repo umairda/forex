@@ -22,8 +22,8 @@ app.service('_update', function($timeout) {
 	}
 });
 
-var ReadAndStoreCtrl = function($scope,pairObjFactory,_update) {
-	
+var ReadAndStoreCtrl = function($scope,Page,pairObjFactory,_update) {
+	Page.setTitle('Data file start and end dates');
 	$scope.currencies = ['aud','cad','chf','eur','gbp','jpy','nzd','usd'];
 	$scope.pairs = [];
 	$scope.update = '';
@@ -45,6 +45,6 @@ var ReadAndStoreCtrl = function($scope,pairObjFactory,_update) {
 	};
 };
 
-ReadAndStoreCtrl.$inject = ['$scope','pairObjFactory','_update'];
+ReadAndStoreCtrl.$inject = ['$scope','Page','pairObjFactory','_update'];
 
 app.controller('readAndStoreCtrl',ReadAndStoreCtrl);

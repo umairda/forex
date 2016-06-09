@@ -7,6 +7,7 @@ angular.module('forex', [
   'routeStyles',
   'forex.factories',
   'forex.graph',
+  'forex.head',
   'forex.readAndStore',
   'forex.table'
 ])

@@ -10,8 +10,9 @@ var app = angular.module('forex.table', ['ngRoute','routeStyles'])
 	});
 }]);
 
-var TableController = function($q, pairObjFactory) {
+var TableController = function($q, Page, pairObjFactory) {
 	var vm = this;
+	
 	vm.currencies = ['aud','cad','chf','eur','gbp','jpy','nzd','usd'];
 	vm.pairs = [];
 	vm.period = 60;
@@ -114,11 +115,12 @@ var TableController = function($q, pairObjFactory) {
 		vm.fillTable().then(function(success) {
 			if (success) vm.findGreatest();
 		});
+		Page.setTitle('Forex Percent Change over Past '+vm.period+' days');
 	};
 	
 	vm.update();
 };
 
-TableController.$inject = ['$q','pairObjFactory'];
+TableController.$inject = ['$q','Page','pairObjFactory'];
 
 app.controller('TableController',TableController);
