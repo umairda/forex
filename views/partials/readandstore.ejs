@@ -1,15 +1,17 @@
+<div ng-controller="readAndStoreController as rasCtrl">
 <span class="fw"></span>
-<span class="center fw" ng-repeat="c1 in currencies">{{c1}}</span>
-<div class="div_c1" ng-repeat="c1 in currencies" ng-class-odd="'odd'" ng-class-even="'even'">
+<span class="center fw" ng-repeat="c1 in rasCtrl.currencies">{{c1}}</span>
+<div class="div_c1" ng-repeat="c1 in rasCtrl.currencies" ng-class-odd="'odd'" ng-class-even="'even'">
 	<span>{{c1}}</span>
 	<span 	title={{c1}}{{c2}}
-			ng-repeat="c2 in currencies" 
-			ng-click="readAndStore(c1,c2)" 
-			ng-init="pairs[c1][c2].setDates()">
+			ng-repeat="c2 in rasCtrl.currencies" 
+			ng-click="rasCtrl.readAndStore(c1,c2)" 
+			ng-init="rasCtrl.pairs[c1][c2].setDates()">
 		<span class='center lastDate'>
-			<div class='green'>{{pairs[c1][c2].dbStartDate}}</div>
-			<div class='red'>{{pairs[c1][c2].dbEndDate}}</div>
+			<div class='green'>{{rasCtrl.pairs[c1][c2].dbStartDate}}</div>
+			<div class='red'>{{rasCtrl.pairs[c1][c2].dbEndDate}}</div>
 		</span>
 	</span>
 </div>
-<div class='center update'>{{update}}</div>
+<div class='update' ng-bind-html="rasCtrl.update"></div>
+</div>

@@ -17,6 +17,7 @@ module.exports = function(config) {
       '../public/bower_components/angular-resource/angular-resource.js',
       '../public/bower_components/angular-mocks/angular-mocks.js',
 	  '../public/bower_components/angular-route-styles/route-styles.js',
+	  '../public/bower_components/angular-sanitize/angular-sanitize.js',
 	  '../public/bower_components/jasmine/lib/jasmine-core/jasmine.js',	  
 	  '../public/bower_components/jquery/dist/jquery.js',
 	  '../public/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
@@ -28,7 +29,7 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-		'unit/readandstore.spec.js',
+
     ],
 
 

@@ -22,15 +22,20 @@ var TableController = function($q, Page, pairObjFactory) {
 		return $q(function(resolve,reject) {
 			for (var i=0; i<vm.currencies.length; i++) {
 				var c1 = vm.currencies[i];
-				if (typeof vm.pairs[c1] === 'undefined') vm.pairs[c1]=[];
+				//if (typeof vm.pairs[c1] === 'undefined') 
+				vm.pairs[c1]=[];
 				for (var j=0; j<vm.currencies.length; j++) {
 					var c2 = vm.currencies[j];
-					if (typeof vm.pairs[c1][c2] === 'undefined') vm.pairs[c1][c2]=new pairObjFactory.pairObj(c1,c2,vm.period);
+					//if (typeof vm.pairs[c1][c2] === 'undefined') 
+					vm.pairs[c1][c2]=new pairObjFactory.pairObj(c1,c2,vm.period);
 					if (c1!=c2) {
 						vm.pairs[c1][c2].period = vm.period;
-						vm.pairs[c1][c2].setDifference().finally(function() {
+						vm.pairs[c1][c2].setDifference().finally(function(result) {
 							complete++;
-							if (complete>(vm.currencies.length*(vm.currencies.length-1)-1)) resolve(1);
+							if (complete>(vm.currencies.length*(vm.currencies.length-1)-1)) 
+							{
+								resolve(1);
+							}
 						});
 					}
 				}
