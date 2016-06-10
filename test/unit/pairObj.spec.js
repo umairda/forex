@@ -1,27 +1,53 @@
 'use strict'
 
 describe('pairObjFactory', function () {
-  var pairObjFactory=0, 
-	  dbHandler=0,
-	  fileHandler=0,
-	  splitMongoDate=0,
-	  $http, $httpBackend, $q, mockData;
+  var pairObjFactory=null, 
+	  //$dbHandler=null,
+	  $httpBackend, $q, $scope;
+  var dbHandlerMock;
   var pair='eurusd';
   var sdate='2016-01-01';
   var edate='2015-12-20';
   var period=10;
   
-  beforeEach(module('forex.factories'));
+  beforeEach(function() {
+	  module('forex.factories')
+	  module(function($provide) {
+		$provide.value('dbHandler',dbHandlerMock);
+	  });
+  });
   beforeEach(inject(function ($injector) {
-	$http = $injector.get('$http');
+	//$dbHandler = $injector.get('dbHandler');
 	$httpBackend = $injector.get('$httpBackend');
 	$q = $injector.get('$q');
-	pairObjFactory = $injector.get('pairObjFactory');
-	dbHandler = $injector.get('dbHandler');
-	fileHandler = $injector.get('fileHandler');
-	splitMongoDate = $injector.get('splitMongoDate');
+	$scope = $injector.get('$rootScope').$new();
 	jasmine.getJSONFixtures().fixturesPath='c:/projects/mean/forex/test/mock/';
 	//mockData = getJSONFixture('pairObj.spec.mockdata.json');
+	
+	dbHandlerMock = {
+		getDatesCalled:false,
+		storeArrayCalled:false,
+		
+		getDates: function(pair) {
+			var _this = this;
+			return $q(function(resolve,reject) {
+				_this.getDatesCalled=true;
+				var response = { data: { start: {date: '1993-01-01'}, end: {date: '1994-01-01'} }};
+				resolve(response);
+			});
+		},		
+		storeArray: function(pair,data_array,messages) {
+			var _this = this;
+			return $q(function(resolve,reject) {
+				_this.storeArrayCalled=true;
+				console.log(_this.storeArrayCalled);
+				var response=[ { data: { status:'5 records added', } } ];
+				resolve(response);
+			});
+		},
+	};
+	
+	pairObjFactory = $injector.get('pairObjFactory');
   }));
   
   it('can get an instance of my factory', function() {
@@ -70,34 +96,44 @@ describe('pairObjFactory', function () {
 	expect(obj.period).toBe(15); 
   });
   
-  xit('can read from the data file and store to the db', function(done) {
-	$httpBackend.when('GET','/readfromfile/'+pair)
-                .respond(200,{  "success":1,
-                                "data":[{"1":{  "Date":"1993/05/11",
-                                            "Open":"1.2414",
-                                            "High":"1.2416",
-                                            "Low":"1.2376",
-                                            "Close":"1.2378",
-                                            "Volume":"0",
-                                            "OpenInterest":"0"},
-                                     "2":{  "Date":"1993/05/12",
+  it('can read from the data file and store to the db - readAndStore()', function(done) {
+	var obj = new pairObjFactory.pairObj();
+		var _data = [{	"1":{  	"Date":"1993/05/11",
+								"Open":"1.2414",
+								"High":"1.2416",
+                                "Low":"1.2376",
+                                "Close":"1.2378",
+                                "Volume":"0",
+                                "OpenInterest":"0"},
+						"2":{  "Date":"1993/05/12",
                                             "Open":"1.2378",
                                             "High":"1.238",
                                             "Low":"1.2353",
                                             "Close":"1.2355",
                                             "Volume":"0",
                                             "OpenInterest":"0"},
-                                     "3":{  "Date":"1993/05/13",
+						"3":{  "Date":"1993/05/13",
                                             "Open":"1.2355",
                                             "High":"1.2357",
                                             "Low":"1.2225",
                                             "Close":"1.2227",
                                             "Volume":"0",
-                                            "OpenInterest":"0"}}]}); 
+                                            "OpenInterest":"0"}}];
+	
+	$httpBackend.when('GET','/readfromfile/'+obj.pair)
+                .respond(200,{  "success":1, "data":_data });
+				
+	obj.readAndStore().then(function(success) {
+		expect(success).toBe('5 records added');
+		expect(dbHandlerMock.storeArrayCalled).toBe(true);
+		done();
+	});
+	$httpBackend.flush();
+	$scope.$digest();
   });
   
   
-  it('can set the dbStartDate and dbEndDate variables', function(done) {
+  it('can set the dbStartDate and dbEndDate variables - setDates()', function(done) {
 	var obj = new pairObjFactory.pairObj();
 
 	$httpBackend.when('GET','/getDates/'+obj.pair)
@@ -116,7 +152,7 @@ describe('pairObjFactory', function () {
 	$httpBackend.flush();
   });
   
-  it('can set the difference', function(done) {
+  it('can set the difference - setDifference()', function(done) {
 	  
 	$httpBackend.when('GET','/getDifference/eurusd/'+new Date()+'/60')
 				.respond(200,{	"sdoc":	{

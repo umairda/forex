@@ -1,7 +1,7 @@
 {
   "name": "forex",
   "description": "",
-  "main": "c:\\projects\\mean\\forex\\public\\javascripts\\ngapp.js",
+  "main": "./public/javascripts/ngapp.js",
   "authors": [
     "Umair Ansari <umairda@gmail.com>"
   ],
