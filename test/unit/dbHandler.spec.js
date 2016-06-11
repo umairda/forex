@@ -193,7 +193,7 @@ describe('dbHandler', function () {
 	$httpBackend.flush();
   });    
 
-  xit('can store data in the db',function(done) {
+  it('can store data in the db - store()',function(done) {
 	var data = [{	"date":"1993-05-11T00:00:00.000Z",
 							"open":1.2414,
 							"high":1.2416,
@@ -218,23 +218,18 @@ describe('dbHandler', function () {
 							"__v":0,
 							"openinterest":0,
 							"volume":0}];
-	$httpBackend.when('POST','/storeindb/'+pair,data)
+
+	$httpBackend.whenRoute('POST','/storeindb/:pair?data=:data')
 				.respond(200, {	"status": "complete 10 records added",
 							"messages": ["message1","message2","message3"]});
-	
-	$httpBackend.expect('POST','/storeindb/'+pair,data);
 							
 	var promise = dbHandler.store(pair,data);
 	promise.then(function(response) {
-		console.log('response',response);
-		console.log('response.data',response.data);
 		expect(response.status).toBe(200);
 		expect(response.data).toBeDefined();
-		expect(response.data.length).toBe(3);
-		expect(response.data[1].open).toBeDefined();
-		expect(response.data[2].date).toBeDefined();
-		expect(response.data[0].close).toBeDefined();
-		expect(response.data[1].volume).toBeDefined();
+		expect(response.data.status).toBe('complete 10 records added');
+		expect(response.data.messages.length).toBe(3);
+		
 		done();
 	});
 	$httpBackend.flush();

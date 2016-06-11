@@ -3,7 +3,7 @@
 describe('pairObjFactory', function () {
   var pairObjFactory=null, 
 	  //$dbHandler=null,
-	  $httpBackend, $q, $scope;
+	  $httpBackend, injector, $q, $scope;
   var dbHandlerMock;
   var pair='eurusd';
   var sdate='2016-01-01';
@@ -12,11 +12,9 @@ describe('pairObjFactory', function () {
   
   beforeEach(function() {
 	  module('forex.factories')
-	  module(function($provide) {
-		$provide.value('dbHandler',dbHandlerMock);
-	  });
   });
   beforeEach(inject(function ($injector) {
+	injector=$injector;
 	//$dbHandler = $injector.get('dbHandler');
 	$httpBackend = $injector.get('$httpBackend');
 	$q = $injector.get('$q');
@@ -26,7 +24,6 @@ describe('pairObjFactory', function () {
 	
 	dbHandlerMock = {
 		getDatesCalled:false,
-		storeArrayCalled:false,
 		
 		getDates: function(pair) {
 			var _this = this;
@@ -39,15 +36,12 @@ describe('pairObjFactory', function () {
 		storeArray: function(pair,data_array,messages) {
 			var _this = this;
 			return $q(function(resolve,reject) {
-				_this.storeArrayCalled=true;
-				console.log(_this.storeArrayCalled);
 				var response=[ { data: { status:'5 records added', } } ];
 				resolve(response);
 			});
 		},
 	};
-	
-	pairObjFactory = $injector.get('pairObjFactory');
+	pairObjFactory=$injector.get('pairObjFactory');
   }));
   
   it('can get an instance of my factory', function() {
@@ -122,10 +116,12 @@ describe('pairObjFactory', function () {
 	
 	$httpBackend.when('GET','/readfromfile/'+obj.pair)
                 .respond(200,{  "success":1, "data":_data });
+
+	$httpBackend.whenRoute('POST','/storeindb/:pair?data=:data')
+				.respond(200,{	"success":1, "status":'5 records added' });
 				
 	obj.readAndStore().then(function(success) {
 		expect(success).toBe('5 records added');
-		expect(dbHandlerMock.storeArrayCalled).toBe(true);
 		done();
 	});
 	$httpBackend.flush();
@@ -135,7 +131,6 @@ describe('pairObjFactory', function () {
   
   it('can set the dbStartDate and dbEndDate variables - setDates()', function(done) {
 	var obj = new pairObjFactory.pairObj();
-
 	$httpBackend.when('GET','/getDates/'+obj.pair)
 				.respond(200,{	"start":
 									{	"instrument":"eurusd",

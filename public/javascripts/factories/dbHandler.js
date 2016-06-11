@@ -41,7 +41,6 @@ angular.module('forex.factories')
 			console.log(pair," file segment ", data_array.length);
 			if (data_array.length>0) {
 				return obj.store(pair,data_array[0]).then(function(success) {
-					console.log(success);
 					messages.push(success);
 					return obj.storeArray(pair,data_array.slice(1,data_array.length),messages);
 				}, function(error) {
@@ -53,7 +52,6 @@ angular.module('forex.factories')
 			else 
 			{
 				var temp = $q.when(messages);
-				//console.log("typeof temp: ",typeof temp);
 				return temp;	
 			}
 		}

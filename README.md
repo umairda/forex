@@ -1,4 +1,22 @@
-#"# forex"
+"# forex"
+
+Motivation:
+-----------
+This is designed to be a simple utility to identify: 
+ - The strongest/weakest currency pairs
+ - For a given currency: the strongest/weakest exchange currency
+
+Configuration:
+--------------
+
+### models/config.json
+
+ - Contains user/pass for MongoDB database
+ 
+### routes/dataFilesPath.js
+
+ - Contains path to sierrachart data files
+
 
 Front-end routes:
 -----------------
@@ -12,11 +30,12 @@ Front-end routes:
 ### /#/readandstore
 
  - Daily OHLC data is pulled from Sierra Chart files and stored in MongoDB "forex" database, under the "ohlcs" collections
- - Sierra Chart data files are included in (repository root)\sierrachart\data, the data file path is specified in routes\dataFilesPath.js
+ - Sierra Chart data files are included in sierrachart/data, the data file path is specified in routes/dataFilesPath.js
  - Shows earliest ohlc data date in file (green) and most recent ohlc data date in file (red)
  - Can retrieve most recent data by clicking on each pair
 
 ### /#/graph
+
  - graphs a currency pair over a specified date range
 
 Back-end routes:

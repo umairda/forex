@@ -16,7 +16,7 @@ describe('splitMongoDate', function() {
 			expect(angular.isObject(obj)).toBe(true);
 		});
 		
-		it('should set correctly parse the date', function() {
+		it('should correctly parse the date', function() {
 			expect(obj.year).toBe(1993);
 			expect(obj.month).toBe(5);
 			expect(obj.day).toBe(11);
