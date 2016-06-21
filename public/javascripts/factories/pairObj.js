@@ -6,9 +6,6 @@ app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDat
 	var pairObj = function() { //params: c1,c2; c1,c2,period; pair; pair, period;
 	var c1='eur', c2='usd', pair='eurusd', period=60;
 		
-		//console.log('arguments: ',arguments);
-		//console.log('arguments.length: ',arguments.length);
-		
 		switch(arguments.length) {
 			case 1: 
 				pair=arguments[0]; 
@@ -69,23 +66,27 @@ app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDat
 			var deferred = $q.defer();
 			var status = '';
 			
-			if (c1 != c2) {		
-				fileHandler.read(pair).then(function (fileResponse) {
+			if (c1 != c2) {
+				var fileHandlerPromise=0;
+				if (_this.dbEndDate) fileHandlerPromise = fileHandler.readFromDate(pair,_this.dbEndDate);
+				else fileHandlerPromise = fileHandler.read(pair);
+			
+				fileHandlerPromise.then(function (fileResponse) {
+					//console.log('fileResponse',fileResponse);
 					if (fileResponse.data && fileResponse.data.success) {
 						var promise = dbHandler.storeArray(pair,fileResponse.data.data,[]);
 						promise.then(function(dbResponse) {
+							console.log('dbResponse',dbResponse);
 							var recordsAdded=0;
 							for (var i=0; i<dbResponse.length; i++) {
+								console.log('dbResponse[i].data.status',dbResponse[i].data.status);
 								recordsAdded+=+dbResponse[i].data.status.replace(/[a-z\s]/gi,'');
 							}
 							status = recordsAdded+" records added";
 							deferred.resolve(status);
 							_this.setDates();
 						}, function(response) {
-							console.log("ERROR");
-							console.log(response);
-							console.log("config");
-							console.log(response.config);
+							console.log("ERROR",response);
 							status="error "+response;
 							deferred.reject(status);
 						});
@@ -121,6 +122,8 @@ app.factory('pairObjFactory', function($q, dbHandler, fileHandler, splitMongoDat
 				}
 				_this.dbStartDate=start;
 				_this.dbEndDate=end;
+				
+				return _this.pair;
 			});
 		};
 		

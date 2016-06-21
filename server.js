@@ -31,22 +31,22 @@ app.use('/', index);
 var users = require('./routes/users');
 app.use('/users', users);
 
-var getdifference = require('./routes/getdifference');
+var getdifference = require('./routes/get_difference');
 app.use('/getdifference',getdifference);
 
-var getlast = require('./routes/getlast');
+var getlast = require('./routes/get_last');
 app.use('/getlast',getlast);
 
-var getDates = require('./routes/getDates');
+var getDates = require('./routes/get_dates');
 app.use('/getdates',getDates);
 
-var readfromdb = require('./routes/readfromdb');
+var readfromdb = require('./routes/read_from_db');
 app.use('/readfromdb',readfromdb);
 
-var readfromfile = require('./routes/readfromfile');
+var readfromfile = require('./routes/read_from_file');
 app.use('/readfromfile',readfromfile);
 
-var storeindb = require('./routes/storeindb');
+var storeindb = require('./routes/store_in_db');
 app.use('/storeindb',storeindb);
 
 // catch 404 and forward to error handler

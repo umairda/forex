@@ -10,7 +10,7 @@ router.get('/:pair/:sdate/:period', function(req, res, next) {
 	var sdate = moment(req.params.sdate).format();
 	var result = {};
 
-	var promise = require('./getDifferenceHelper.js')(pair,period,sdate,result);
+	var promise = require('./get_difference_helper.js')(pair,period,sdate,result);
 	promise.then(function(docs) {
 		res.json(result);
 	});
@@ -22,7 +22,7 @@ router.get('/:pair/:period', function(req, res, next) {
 	var sdate = moment().format();
 	var result = {};
 	
-	var promise = require('./getDifferenceHelper.js')(pair,period,sdate,result);
+	var promise = require('./get_difference_helper.js')(pair,period,sdate,result);
 	promise.then(function(docs) {
 		res.json(result);
 	});

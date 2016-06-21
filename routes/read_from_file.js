@@ -1,77 +1,53 @@
-var isNumber = require('./is_number.js');
-var _trim = require('./_trim.js');
+var express = require('express');
+var router = express.Router();
+var dataFilesPath = require('./dataFilesPath.js');
 
-var read_from_file = function(data_arr, filename)
-{
-	var lineReader = require('readline').createInterface({
-		input: require('fs').createReadStream(filename)
-	});
+router.get('/',function(req, res, next) { res.send("no pair specified"); });
 
-	var i=0;
-	var data = {};
-	var data_names = [];
-	var message = '';
-	var messages = [];
-	var util = require('util');
-	var segment = 0;
+router.get('/:pair/:sdate*?', function(req, res, next) {
+	var pair = req.params.pair;
+	var sdate = req.params.sdate;
+	var allowed_pairs = ['eurusd','audcad'];
+	var filename = dataFilesPath.value+pair+'.dly';
 	
-	function _record(formatted_string) {
-		messages.push(formatted_string);
-		console.log(formatted_string);
-	}
-	
-	return lineReader.on('line', function (line) {
-		
-		var arr = line.split(",");
-		
-		if (i==0)
+	require('fs').stat(filename,function(err,stats) {
+		if (err) 
 		{
-			var temp = {};
-
-			for(var j in arr)
-			{
-				arr[j] = _trim(arr[j]);
-				data_names.push(arr[j]);
-				temp[j]=arr[j];
-			}
-			_record(util.format("(%d) data names stored: %s",i,line));
-			data["filename"] = filename;
-			data["columns"] = temp;
+			console.log('Error: ',err.code);
+			res.json({success:0,message:err});
 		}
-		else 
-		{	
-			if (!(i%300)) {
-				data = {};
-				segment++;
-			}
-			var temp = {};
-			
-			for (var k in data_names)
-			{
-				if (typeof arr[k] === 'undefined')
-				{
-					_record(util.format("(%d) %s does not exist for: %s", i,data_names[k],line));
+		else if (stats.isFile()) 
+		{
+			var data = [];
+			var result = require('./read_from_file_helper.js')(data,filename);
+			result.on('close', function() {
+				if (sdate) {
+					var sTime = new Date(sdate);
+					sTime.setDate(sTime.getDate()-1);
+					var returnData=[];
+					for(var i=0; i<data.length; i++)
+					{
+						var segment = data[i];
+						for (var j=0; j<segment.length; j++) {
+							console.log(segment[j]);
+							if (typeof segment[j].Date !== 'undefined') {
+								var cTime = (new Date(segment[j].Date)).getTime();
+								console.log(segment[j].Date,cTime,sTime,cTime>sTime);
+								if(cTime>=sTime) {
+									console.log('end');
+									returnData.push(segment.slice(j,segment.length));
+									break;
+								}
+							}
+						}
+					}
+					res.json({success:1,data:returnData});
 				}
-				else 
-				{
-					temp[data_names[k]] = _trim(arr[k]);
-					_record(util.format("(%d) %s stored in %s",i,arr[k],data_names[k]));
-				}
-				if (i==1)
-				{
-					var temp2 = data["columns"][k];
-					data["columns"][k] = {};
-					data["columns"][k]["name"] = temp2;
-					
-					if (isNumber(arr[k])) data["columns"][k]["type"] = "number";
-					else data["columns"][k]["type"] = "string";
-				}
-			}
-			data[i] = temp;
-			data_arr[segment] = data;
+				else res.json({success:1,data:data});
+			});
 		}
-		i++;
+		else res.json({success:0,message:"invalid pair: " + pair});
 	});
-}
+});
 
-module.exports = read_from_file;
+module.exports = router;

@@ -1,1 +1,1 @@
-exports.value = "./sierrachart/data/";
+exports.value = "sierrachart/data/";

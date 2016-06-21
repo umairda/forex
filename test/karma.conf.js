@@ -23,6 +23,7 @@ module.exports = function(config) {
 	  '../public/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
 	  '../public/javascripts/*.js',
 	  '../public/javascripts/factories/*.js',
+	  '../public/components/**/*.js',
 	  'unit/**/*.js',
 	  {pattern: 'mock/*.json', watched: true, served: true, included: false}
     ],

@@ -10,7 +10,7 @@ var app = angular.module('forex.readAndStore', ['ngRoute','ngSanitize','routeSty
 	});
 }]);
 
-var readAndStoreController = function(Page,pairObjFactory,$q) {
+var readAndStoreController = function(Page,pairObjFactory,$q,$scope) {
 	Page.setTitle('Data file start and end dates');
 	var vm = this;
 	vm.currencies = ['aud','cad','chf','eur','gbp','jpy','nzd','usd'];
@@ -18,20 +18,37 @@ var readAndStoreController = function(Page,pairObjFactory,$q) {
 	vm.update = '';
 	
 	vm.init = function() {
-		var complete=0;
-		return $q(function(resolve,reject) {
+		/*var complete=0;
+		//return $q(function(resolve,reject) {
 			for (var i=0; i<vm.currencies.length; i++) {
 				var c1 = vm.currencies[i];
 				vm.pairs[c1] = [];
 				for (var j=0; j<vm.currencies.length; j++) {
 					var c2 = vm.currencies[j];
 					vm.pairs[c1][c2]=new pairObjFactory.pairObj(c1,c2,0);
-					vm.pairs[c1][c2].setDates().then(function() {
+					console.log(c1,c2," setting dates");
+					vm.pairs[c1][c2].setDates().then(function(param) {
+						console.log(param," dates set");
 						complete++;
-						if (complete>vm.currencies.length*vm.currencies.length-1) resolve(1);
+						//if (complete>vm.currencies.length*vm.currencies.length-1) resolve(1);
 					});
 				}
 			}
+		//});
+		*/
+		var queue = [];
+		for (var i=0; i<vm.currencies.length; i++) {
+				var c1 = vm.currencies[i];
+				vm.pairs[c1] = [];
+				for (var j=0; j<vm.currencies.length; j++) {
+					var c2 = vm.currencies[j];
+					vm.pairs[c1][c2]=new pairObjFactory.pairObj(c1,c2,0);
+					console.log(c1,c2," setting dates");
+					queue.push(vm.pairs[c1][c2].setDates());
+				}
+		}
+		$q.all(queue).then(function() {
+			console.log('complete');
 		});
 	};
 	
@@ -44,6 +61,6 @@ var readAndStoreController = function(Page,pairObjFactory,$q) {
 	vm.init();
 };
 
-readAndStoreController.$inject = ['Page','pairObjFactory','$q'];
+readAndStoreController.$inject = ['Page','pairObjFactory','$q','$scope'];
 
 app.controller('readAndStoreController',readAndStoreController);
