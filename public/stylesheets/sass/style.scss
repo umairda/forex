@@ -1,0 +1,38 @@
+@import "loading.scss";
+
+$colors:(
+	('gray',		rgba(200,200,200,1)),
+	('green',		rgba(0,255,0,0.2)),
+	('red',			rgba(255,0,0,0.2)),
+	('dark_green',	rgba(0,255,0,0.5)),
+	('dark_red',	rgba(255,0,0,0.5)),
+	('white',		rgba(255,255,255,1))
+);
+
+@each $colorName, $colorValue in $colors {
+	.#{$colorName} {
+		background-color:#{$colorValue};
+	}
+	
+	.#{$colorName}_border {
+		border:solid 1px #{$colorValue};
+	}
+}
+
+div {
+	a {
+		color:green;
+		margin:0px 20px 0px 20px;
+	}
+}
+
+$widths:(30,60);
+@each $width in $widths {
+	.fw#{$width} {
+		width:#{$width}px;
+	}
+}	
+
+
+		
+

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node ./bin/www forexApp",
+	"stop": "pkill --signal SIGINT forexApp",
     "test": "test/test-main.js"
   },
   "dependencies": {
@@ -24,6 +25,10 @@
     "util": "latest"
   },
   "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-sass": "^1.2.0",
     "gulp": "^3.9.1",
     "jshint": "^2.9.2",
     "karma-chrome-launcher": "^1.0.1",

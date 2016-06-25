@@ -24,7 +24,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 var index = require('./routes/index');
 app.use('/', index);
 

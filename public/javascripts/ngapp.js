@@ -1,15 +1,17 @@
-'use strict';
+(function() {
 
-angular.module('forex.factories', []);
+	'use strict';
 
-angular.module('forex', [
-  'ngRoute',
-  'routeStyles',
-  'forex.factories',
-  'forex.graph',
-  'forex.head',
-  'forex.readAndStore',
-  'forex.table'
-])
+	angular.module('forex.factories', []);
 
+	angular.module('forex', [
+	  'ngRoute',
+	  'routeStyles',
+	  'forex.factories',
+	  'forex.graph',
+	  'forex.head',
+	  'forex.readAndStore',
+	  'forex.table'
+	]);
 
+})();

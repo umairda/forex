@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var dataFilesPath = require('./dataFilesPath.js');
+var dataFilesPath = require('./data_files_path.js');
 
 router.get('/',function(req, res, next) { res.send("no pair specified"); });
 

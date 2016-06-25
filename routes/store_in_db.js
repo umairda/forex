@@ -3,7 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var util = require('util');
-var dataFilesPath = require('./dataFilesPath');
+var dataFilesPath = require('./data_files_path');
 var Q = require('q');
 
 router.post('/',function(req, res, next) { res.send("no pair specified"); });
@@ -42,8 +42,15 @@ router.post('/:pair', function(req, res, next) {
 							return loop(index-1);
 						}
 					},function(err) {
-						console.log("-----------\nERROR caught: ",err);						
-						return loop(index-1);
+						console.log("-----------\nERROR caught: ",err);		
+						if (index===0) {
+							console.log("index===0");
+							return deferred.resolve(records_saved);
+						}
+						else {
+							console.log("iterate");
+							return loop(index-1);
+						}
 					});
 				};
 				
