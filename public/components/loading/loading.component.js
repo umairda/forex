@@ -39,7 +39,7 @@
 			});
 		};
 
-	angular.module('forex').component('loading', {
+	angular.module('forex.components').component('loading', {
 		bindings: {},
 		controller: loadingCtrl,
 		templateUrl: '/components/loading/loading.html'

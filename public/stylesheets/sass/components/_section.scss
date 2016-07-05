@@ -1,0 +1,11 @@
+/*
+*
+*	Section styles
+*
+*/
+
+.section {
+	@include border-radius(3px);
+	border:none !important;
+	min-width:300px !important;
+}

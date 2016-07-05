@@ -1,0 +1,43 @@
+/*
+*
+*	Feed Component Styles
+*
+*/
+
+.feed {
+	direction:rtl;
+	height:100%;
+	overflow-y:scroll;
+	
+	ul {
+		direction:ltr;
+		
+		li {	
+			@extend .panel;
+			background:none !important;
+			border:none !important;
+			
+			h4 {
+				@extend .panel-heading;
+				background:$primary_panel_bg_color;
+				margin:0;
+				
+				a {
+					color:$base-font-color;
+				}
+			}
+			
+			._content {
+				@extend .panel-body;
+				background:$secondary_panel_bg_color;
+			}
+			
+			._date {
+				@extend .panel-footer;
+				background:$secondary_panel_bg_color;
+				border-top:solid 1px rgba(51,67,92,0.25);
+			}
+			
+		}
+	}
+}

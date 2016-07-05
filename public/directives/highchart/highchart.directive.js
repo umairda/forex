@@ -1,89 +1,115 @@
 (function() {
 	'use strict';
-
-	angular.module('forex').directive('chart', function(dbHandler) {
+	
+	var highchartController = function(dbHandler,$q,$scope) {
+		var vm = this;
+			
+		vm.currencies=['AUD','CAD','CHF','EUR','GBP','JPY','NZD','USD'];
+		//vm.pair="not set";
+		vm.pairs=[];
+		vm.chartData=0;
+		vm.chartObj=0;
+		
+		for (var i=0; i<vm.currencies.length; i++) {
+			for (var j=0; j<vm.currencies.length; j++) {
+				if (i !== j) {
+					vm.pairs.push(vm.currencies[i]+vm.currencies[j]);
+				}
+			}
+		}
+		//vm.pair = vm.pairs[0];
+		
+		vm.getChartData = function() {
+			var deferred = $q.defer();				
+			var ohlc = [];
+			dbHandler.read(vm.pair).then(function(response) {
+				for (var i=0; i<response.data.length; i++) {
+					var datum = [];
+					var dateObj = new Date(response.data[i].date);
+					datum[0] = dateObj;
+					datum[1] = response.data[i].open;
+					datum[2] = response.data[i].high;
+					datum[3] = response.data[i].low;
+					datum[4] = response.data[i].close;
+				
+					ohlc.push(datum);
+				}
+			}).then(function() {
+				//console.log('ohlc',ohlc);
+				deferred.resolve(ohlc);
+			});
+			return deferred.promise;
+		};
+		
+		vm.updateChart = function(ohlc) {
+			delete vm.chartData;
+			vm.chartData = {
+				title: {
+					text: vm.pair,
+				},
+				xAxis: {
+					type: 'datetime',
+					dateTimeLabelFormats: {
+						second: '%Y-%m-%d<br/>%H:%M:%S',
+						minute: '%Y-%m-%d<br/>%H:%M',
+						hour: '%Y-%m-%d<br/>%H:%M',
+						day: '%Y<br/>%m-%d',
+						week: '%Y<br/>%m-%d',
+						month: '%Y-%m',
+						year: '%Y'
+					},
+					minRange:1000*3600,
+					title:'date',
+				},
+				yAxis: {
+					title:'exchange rate'
+				},
+				series: [{
+					data: ohlc,
+					name: vm.pair,
+					type: 'candlestick',
+					dataGrouping: {
+							units:[	['day',[1]],['week',[1]],['month',[1]],['year',[1]]	]
+					}
+				}],
+			};
+		};
+	};
+	
+	angular.module('forex.directives').directive('highchart', function(dbHandler) {
 		return {
 			restrict: 'E',
-			template: '<div></div>',
+			template: '<div class="my_highchart"></div>',
+			controller: highchartController,
+			controllerAs: 'ctrl',
 			scope: {
-				chartData: "=value",
-				chartObj: "=?",
-				control: "=?"
+				pair: "=pair",
 			},
+			bindToController: true,
 			transclude: true,
 			replace: true,
-			link: function($scope, $element, $attrs) {
-				
-				$scope.control.updateChartData = function(pair) {
-					console.log('updateChartData',pair);
-					dbHandler.read(pair).then(function(response) {
-						delete $scope.ohlc;
-						$scope.ohlc = [];
-						for (var i in response.data) {
-							var datum = [];
-							var dateObj = new Date(response.data[i].date);
-							datum[0] = dateObj;
-							datum[1] = response.data[i].open;
-							datum[2] = response.data[i].high;
-							datum[3] = response.data[i].low;
-							datum[4] = response.data[i].close;
-					
-							$scope.ohlc.push(datum);
-						}
-					}).finally(function() {
-						delete $scope.chartData;
-						var title = pair;
-						
-						$scope.chartData = {
-							title: {
-								text: title,
-							},
-							xAxis: {
-								type: 'datetime',
-								dateTimeLabelFormats: {
-									second: '%Y-%m-%d<br/>%H:%M:%S',
-									minute: '%Y-%m-%d<br/>%H:%M',
-									hour: '%Y-%m-%d<br/>%H:%M',
-									day: '%Y<br/>%m-%d',
-									week: '%Y<br/>%m-%d',
-									month: '%Y-%m',
-									year: '%Y'
-								},
-								minRange:1000*3600,
-								title:'date',
-							},
-							yAxis: {
-								title:'exchange rate'
-							},
-							series: [{
-								data: $scope.ohlc,
-								name: pair,
-								type: 'candlestick',
-								dataGrouping: {
-										units:[	['day',[1]],['week',[1]],['month',[1]],['year',[1]]	]
-								}
-							}],
-						};
-					});
-				};
-				
+			link: function($scope, $element, $attrs, ctrl) {	
+			
 				//Update when charts data changes
-				$scope.$watch('chartData', function(value) {
-					if (!value) { return; }
-					
-					// Initiate the chartData.chart if it doesn't exist yet
-					$scope.chartData.chart = $scope.chartData.chart || {};
+				$scope.$watch(function watchPair(scope) {
+						return ctrl.pair;
+					}, function(value) {
+						if (!value) { return; }
+						
+						ctrl.getChartData().then(function(ohlc) {
+							ctrl.updateChart(ohlc);
+							ctrl.chartData.chart = ctrl.chartData.chart || {};
+							ctrl.chartData.chart.renderTo = ctrl.chartData.chart.renderTo || $element[0];
+							
+							if ($attrs.type) {
+								ctrl.chartData.chart.type = ctrl.chartData.chart.type || $attrs.type; }
+							if ($attrs.height) {
+								ctrl.chartData.chart.height = ctrl.chartData.chart.height || $attrs.height; }
+							if ($attrs.width) {
+								ctrl.chartData.chart.width = ctrl.chartData.chart.type || $attrs.width; }
 
-					// use default values if nothing is specified in the given settings
-					$scope.chartData.chart.renderTo = $scope.chartData.chart.renderTo || $element[0];
-					if ($attrs.type) {
-						$scope.chartData.chart.type = $scope.chartData.chart.type || $attrs.type; }
-					if ($attrs.height) {
-						$scope.chartData.chart.height = $scope.chartData.chart.height || $attrs.height; }
-					if ($attrs.width) {
-						$scope.chartData.chart.width = $scope.chartData.chart.type || $attrs.width; }
-
-					$scope.chartObj = new Highcharts.StockChart($scope.chartData);
+							ctrl.chartObj = new Highcharts.StockChart(ctrl.chartData);
+						});
 				});
 			}
 		};

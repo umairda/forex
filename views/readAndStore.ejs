@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="forex" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="forex" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="forex" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="forex" class="no-js" ng-controller="HeadController as HeadCtrl"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{{HeadCtrl.page.title()}}</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="/stylesheets/style.css">
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+		  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+		<div class="footer_position">
+			<nav class="navbar navbar-inverse clear-top">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="#">
+							<div ng-bind="HeadCtrl.page.title()"></div>
+						</a>
+					</div>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="http://github.com/umairda/forex">Source</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+			
+			<loading></loading>
+			<div class="main_content">
+				<% include partials/readandstore %>
+			</div>
+		</div>
+		<footer class="footer"></footer>
+
+		<script src="/bower_components/angular/angular.js"></script>
+		<script src="/bower_components/angular-route/angular-route.js"></script>
+		<script src="/bower_components/angular-route-styles/route-styles.js"></script>
+		<script src="/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+		<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="/bower_components/highcharts/highstock5.js"></script>
+		<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+		<script src="/javascripts/ngapp.js"></script>
+		<script src="/javascripts/factories/db_handler.factory.js"></script>
+		<script src="/javascripts/factories/file_handler.factory.js"></script>
+		<script src="/javascripts/factories/http_interceptor.factory.js"></script>
+		<script src="/javascripts/factories/page.factory.js"></script>
+		<script src="/javascripts/factories/pair.factory.js"></script>
+		<script src="/javascripts/factories/split_mongo_date.factory.js"></script>
+		<script src="/javascripts/controllers/head.controller.js"></script>
+		<script src="/javascripts/controllers/index.controller.js"></script>
+		<script src="/javascripts/controllers/graph.controller.js"></script>
+		<script src="/javascripts/controllers/table.controller.js"></script>
+		<script src="/javascripts/controllers/read_and_store.controller.js"></script>
+		<script src="/components/feed/feed.component.js"></script>
+		<script src="/components/loading/loading.component.js"></script>
+		<script src="/components/pair_select/pair_select.component.js"></script>
+		<script src="/components/quote_box/quote_box.component.js"></script>
+		<script src="/directives/highchart/highchart.directive.js"></script> 
+		<script src="/directives/currency_table/currency_table.directive.js"></script> 
+	</body>
+</html>

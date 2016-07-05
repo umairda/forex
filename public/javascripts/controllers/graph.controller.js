@@ -2,7 +2,7 @@
 
 	'use strict';
 
-	var app = angular.module('forex.graph', ['ngRoute','routeStyles'])
+	var app = angular.module('forex.controllers')
 
 	.config(['$routeProvider', function($routeProvider) {
 	  $routeProvider.when('/graph', {

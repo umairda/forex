@@ -1,0 +1,11 @@
+body {
+	@include radial-gradient($primary_color, $secondary_color, top left, circle);
+	@include scrollbars(.5em,slategray);
+	background-attachment:fixed;
+	color: $base-font-color;
+	font-family: $base-font-family;
+	font-size: $base-font-size;
+	font-weight: $base-font-weight;	
+	height:100%;
+	width:100%;
+}

@@ -21,22 +21,21 @@ Configuration:
 Front-end routes:
 -----------------
 
-### /#/table
+### /
 
- - tabulates currency pair performance over a specified interval
- - darkest green/darkest red squares highlight best/worst performing pairs.
- - green/red outlines highlight best/worst performing currency against a single pair
+ - Tabulates currency pair performance over a specified interval
+ - Darkest green/darkest red squares highlight best/worst performing pairs.
+ - Green/red outlines highlight best/worst performing currency against a single pair
+ - Graph pair historical data
+ - Get most recent price quote stored in database
+ - Forex news feed
 
-### /#/readandstore
+### /readandstore
 
  - Daily OHLC data is pulled from Sierra Chart files and stored in MongoDB "forex" database, under the "ohlcs" collections
  - Sierra Chart data files are included in sierrachart/data, the data file path is specified in routes/dataFilesPath.js
  - Shows earliest ohlc data date in file (green) and most recent ohlc data date in file (red)
  - Can retrieve most recent data by clicking on each pair
-
-### /#/graph
-
- - graphs a currency pair over a specified date range
 
 Back-end routes:
 ----------------

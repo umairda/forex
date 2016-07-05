@@ -2,7 +2,7 @@
 	
 	'use strict';
 
-	var app = angular.module('forex.head', []);
+	var app = angular.module('forex.controllers');
 
 	var HeadController = function(Page,$rootScope) {
 		var vm = this;

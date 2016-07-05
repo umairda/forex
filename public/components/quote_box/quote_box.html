@@ -1,0 +1,21 @@
+<div class='quote_box'>
+	<div class="dropdown">
+		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+			{{$ctrl.quote.instrument}}
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li ng-repeat="pair in $ctrl.pairs" ng-click="$ctrl.instrument=pair;">
+				{{pair}}			
+			</li>
+		</ul>
+	</div>
+	<table>
+		<tbody>
+			<tr ng-repeat="(key,value) in $ctrl.quote">
+				<td class="_{{key}} _key">{{key}}</td>
+				<td class="_{{key}} _value">{{value}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

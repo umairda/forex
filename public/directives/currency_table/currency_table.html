@@ -1,0 +1,34 @@
+<div class="currency_table">
+	<div>
+		Period:<input class="center" ng-model="ctrl.period">days
+	</div>
+	<table>
+		<thead class='thead-default'>
+			<tr>
+				<th></th>
+				<th ng-repeat="c1 in ctrl.currencies">
+					{{c1}}
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="c1 in ctrl.currencies">
+				<td>{{c1}}</td>
+				<td title="{{c1}}{{c2}}"
+					ng-click="ctrl.select(c1,c2)"
+					ng-repeat="c2 in ctrl.currencies" 
+					ng-init="ctrl.getDifference(c1,c2)"
+					ng-class="{	red:ctrl.pairs[c1][c2].difference<0,
+								green:ctrl.pairs[c1][c2].difference>0,
+								blue:ctrl.pairs[c1][c2].difference=='-',
+								green_border:ctrl.pairs[c1][c2].greatestVsC1,
+								red_border:ctrl.pairs[c1][c2].leastVsC1,
+								white_border:(!ctrl.pairs[c1][c2].greatestVsC1 && !ctrl.pairs[c1][c2].leastVsC1),
+								dark_red:ctrl.pairs[c1][c2].least,
+								dark_green:ctrl.pairs[c1][c2].greatest}">
+						{{ctrl.pairs[c1][c2].difference}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

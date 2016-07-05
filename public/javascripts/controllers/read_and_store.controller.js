@@ -1,6 +1,8 @@
 (function() {
+	
 	'use strict';
-	var app = angular.module('forex.readAndStore', ['ngRoute','ngSanitize','routeStyles'])
+	
+	var app = angular.module('forex.controllers')
 
 	.config(['$routeProvider',function($routeProvider) {
 		$routeProvider.when('/readandstore', {
@@ -10,7 +12,7 @@
 		});
 	}]);
 
-	var readAndStoreController = function(Page,pairObjFactory,$q,$scope) {
+	var readAndStoreController = function(Page,Pair,$q,$scope) {
 		Page.setTitle('Data file start and end dates');
 		var vm = this;
 		vm.currencies = ['aud','cad','chf','eur','gbp','jpy','nzd','usd'];
@@ -42,7 +44,7 @@
 					vm.pairs[c1] = [];
 					for (var j=0; j<vm.currencies.length; j++) {
 						var c2 = vm.currencies[j];
-						vm.pairs[c1][c2]=new pairObjFactory.pairObj(c1,c2,0);
+						vm.pairs[c1][c2]=new Pair.obj(c1,c2,0);
 						//console.log(c1,c2," setting dates");
 						queue.push(vm.pairs[c1][c2].setDates());
 					}
@@ -63,7 +65,7 @@
 		vm.init();
 	};
 
-	readAndStoreController.$inject = ['Page','pairObjFactory','$q','$scope'];
+	readAndStoreController.$inject = ['Page','Pair','$q','$scope'];
 
 	app.controller('readAndStoreController',readAndStoreController);
 

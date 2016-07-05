@@ -1,0 +1,65 @@
+/*
+*
+*	Quote Box Styles
+*
+*/
+
+.quote_box {
+	background:rgba(51,51,51,0.2);
+	@include border-radius(5px);
+	
+	width:100%;
+	
+	button {
+		width:100%;
+	}
+	
+	.dropdown-menu {
+		width:100%;
+		background-color:rgba(70,70,70,0.8);
+		height:150px;
+		overflow-y:scroll;
+		
+		li {
+			text-align:center;
+		}
+		
+		li:hover {
+			background-color:rgba(70,70,150,0.9);
+		}
+	}
+
+	table {
+		@extend .table;		
+		@extend .table-condensed;
+		border-color:$secondary_panel_bg_color;
+		
+		td {
+			text-align:center;
+		}
+		
+		._instrument {
+			display:none;
+		}
+		
+		._date._key {
+			visibility:hidden;
+		}
+		
+		._open {
+			
+		}
+		
+		._high {
+			background-color:$_green;
+		}
+		
+		._low {
+			background-color:$_red;
+		}
+		
+		._close {
+		}
+	
+	}
+}

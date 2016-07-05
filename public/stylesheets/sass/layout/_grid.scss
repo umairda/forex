@@ -1,0 +1,36 @@
+.navbar {
+	
+}
+
+.currency_table {
+	@extend .col-xs-12;
+	@extend .col-sm-6;
+	@extend .col-md-6;
+	@extend .section;
+}
+
+.my_highchart {
+	@extend .col-xs-12;
+	@extend .col-sm-6;
+	@extend .col-md-6;
+	@extend .section;
+}
+
+.quote_box_wrapper {
+	@extend .col-xs-12;
+	@extend .col-sm-6;
+	@extend .col-md-6;
+	@extend .section;
+}
+
+.feed {
+	@extend .col-xs-12;
+	@extend .col-sm-6;
+	@extend .col-md-6;
+	@extend .section;
+}
+
+
+.footer {
+	@extend .container-fluid;
+}

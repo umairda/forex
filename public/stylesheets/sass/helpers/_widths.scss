@@ -1,0 +1,6 @@
+$widths:(30,60);
+@each $width in $widths {
+	.fw#{$width} {
+		width:#{$width}px;
+	}
+}	

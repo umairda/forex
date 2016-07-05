@@ -1,0 +1,6 @@
+.radial {
+	@include radial-gradient($primary_color, $secondary_color, top right, circle);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}

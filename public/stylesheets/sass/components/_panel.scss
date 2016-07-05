@@ -1,0 +1,13 @@
+/*
+*
+*	Panel styles
+*
+*/
+
+.panel {
+	@include border-radius(5px);
+	background:none !important;
+	border:none !important;
+	max-height:600px !important;
+	max-width:600px !important;
+}

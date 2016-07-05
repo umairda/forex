@@ -9,16 +9,9 @@ router.get('/partials/:name', function(req, res, next) {
 	res.render('partials/'+req.params.name);
 });
 
-router.get('/table', function(req, res, next) {
-	res.redirect('/#/table');
-});
-
-router.get('/graph', function(req, res, next) {
-	res.redirect('/#/graph');
-});
-
 router.get('/readandstore', function(req, res, next) {
-	res.redirect('/#/readandstore');
+	console.log('read and store route');
+	res.render('readandstore', { title: 'Read and Store'});
 });
 
 module.exports = router;

@@ -52,7 +52,7 @@ module.exports = function(grunt) {
 					style: 'compressed'
 				},
 				files: {
-					'public/stylesheets/gstyle.css': 'public/stylesheets/sass/style.scss'
+					'public/stylesheets/style.css': 'public/stylesheets/sass/style.scss'
 				}
 			}
 		},
@@ -76,21 +76,22 @@ module.exports = function(grunt) {
         // Watch for changes made in the files below and run the assigned task
 		watch: {
 			options: {
-				livereload: true
+				livereload: 35730,
 			},
 			js: {
-				files: ['public/javascripts/**/*.js'],                                         // Files to watch
+				files: ['public/**/*.js','!public/bower_components/**'],                                         // Files to watch
 				tasks: ['jshint'],      // Tasks to run when watched files change
-				events: true
+				event: 'all'
 			},
 			css: {
 				files: ['public/stylesheets/**/*.scss'],
 				tasks: ['sass'],
-				events: true
+				event: 'all'
 			},
 			sass: {
 				files: ['public/stylesheets/sass/**/*.{scss,sass}','public/stylesheets/sass/_partials/**/*.{scss,sass}'],
-				tasks: ['sass:dist']
+				tasks: ['sass:dist'],
+				event: 'all'
 			},
 		},
 	});
@@ -98,6 +99,5 @@ module.exports = function(grunt) {
 	// Load Grunt tasks declared in the package.json file
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
-	// Default: JavaScript updates
 	grunt.registerTask('default', ['jshint', 'sass:dist', 'watch']);
 };

@@ -7,7 +7,9 @@ router.get('/',function(req, res, next) { res.send("no pair specified"); });
 
 router.get('/:pair', function(req, res, next) {
 	var pair = req.params.pair;
-	Ohlc.findOne({instrument:pair}).sort('-date').exec(function(err,docs) {
+	Ohlc.findOne({instrument:pair})
+		.select('-__v -_id -openinterest')
+		.sort('-date').exec(function(err,docs) {
 		res.json(docs);
 	});
 });

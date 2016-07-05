@@ -1,0 +1,65 @@
+/*
+*
+*	Currency Table Directive Styles
+*
+*/
+
+//Colors used for setting background/background-colors for table cells
+
+$table_colors:(
+	('blue',		$_blue),
+	('gray',		$_gray),
+	('green',		$_green),
+	('red',			$_red),
+	('dark_green',	$_dark_green),
+	('dark_red',	$_dark_red),
+	('white',		$_white)
+);
+
+@each $colorName, $colorValue in $table_colors {
+	.#{$colorName} {
+		background-color:#{$colorValue};
+	}
+	
+	.#{$colorName}_border {
+		border:solid 1px #{$colorValue};
+	}
+}
+
+.currency_table {
+	border:none !important;
+	height:100%;
+	
+	input {
+		background-color:$secondary_panel_bg_color;
+		border:none;
+		@include border-radius(5px);
+		margin-left:2px;
+		margin-right:2px;
+		text-align:center;
+		width:50px;
+	}
+	table {
+		@extend .table;
+		@extend .table-condensed;
+		@extend .table-responsive;
+		height:380px;
+		margin:auto;
+		
+		tr th:first-child {
+			border-right:solid 1px;
+		}
+		
+		tr td:first-child {
+			border:none;
+		}
+		
+		td, th {
+			text-align:center;
+		}
+		
+		tr td:not(:first-child) {
+			cursor:pointer;
+		}
+	}
+}
