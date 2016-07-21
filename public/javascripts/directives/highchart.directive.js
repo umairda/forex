@@ -4,25 +4,13 @@
 	var highchartController = function(dbHandler,$q,$scope) {
 		var vm = this;
 			
-		vm.currencies=['AUD','CAD','CHF','EUR','GBP','JPY','NZD','USD'];
-		//vm.pair="not set";
-		vm.pairs=[];
 		vm.chartData=0;
 		vm.chartObj=0;
 		
-		for (var i=0; i<vm.currencies.length; i++) {
-			for (var j=0; j<vm.currencies.length; j++) {
-				if (i !== j) {
-					vm.pairs.push(vm.currencies[i]+vm.currencies[j]);
-				}
-			}
-		}
-		//vm.pair = vm.pairs[0];
-		
 		vm.getChartData = function() {
-			var deferred = $q.defer();				
+			var deferred = $q.defer();			
 			var ohlc = [];
-			dbHandler.read(vm.pair).then(function(response) {
+			var promise = dbHandler.read(vm.pair).then(function(response) {
 				for (var i=0; i<response.data.length; i++) {
 					var datum = [];
 					var dateObj = new Date(response.data[i].date);
@@ -34,7 +22,7 @@
 				
 					ohlc.push(datum);
 				}
-			}).then(function() {
+			}).finally(function() {
 				//console.log('ohlc',ohlc);
 				deferred.resolve(ohlc);
 			});
@@ -76,7 +64,7 @@
 		};
 	};
 	
-	angular.module('forex.directives').directive('highchart', function(dbHandler) {
+	angular.module('forex.directives').directive('highchart', function() {
 		return {
 			restrict: 'E',
 			template: '<div class="my_highchart"></div>',
@@ -92,24 +80,28 @@
 			
 				//Update when charts data changes
 				$scope.$watch(function watchPair(scope) {
-						return ctrl.pair;
-					}, function(value) {
+						return $scope.ctrl.pair;
+					}, function(value,oldValue) {
 						if (!value) { return; }
-						
-						ctrl.getChartData().then(function(ohlc) {
-							ctrl.updateChart(ohlc);
-							ctrl.chartData.chart = ctrl.chartData.chart || {};
-							ctrl.chartData.chart.renderTo = ctrl.chartData.chart.renderTo || $element[0];
-							
-							if ($attrs.type) {
-								ctrl.chartData.chart.type = ctrl.chartData.chart.type || $attrs.type; }
-							if ($attrs.height) {
-								ctrl.chartData.chart.height = ctrl.chartData.chart.height || $attrs.height; }
-							if ($attrs.width) {
-								ctrl.chartData.chart.width = ctrl.chartData.chart.type || $attrs.width; }
+					
+						var promise = $scope.ctrl.getChartData();
 
-							ctrl.chartObj = new Highcharts.StockChart(ctrl.chartData);
-						});
+						if (angular.isDefined(promise)) {
+							promise.then(function(ohlc) {
+								ctrl.updateChart(ohlc);
+								ctrl.chartData.chart = ctrl.chartData.chart || {};
+								ctrl.chartData.chart.renderTo = ctrl.chartData.chart.renderTo || $element[0];
+								
+								if ($attrs.type) {
+									ctrl.chartData.chart.type = ctrl.chartData.chart.type || $attrs.type; }
+								if ($attrs.height) {
+									ctrl.chartData.chart.height = ctrl.chartData.chart.height || $attrs.height; }
+								if ($attrs.width) {
+									ctrl.chartData.chart.width = ctrl.chartData.chart.type || $attrs.width; }
+
+								ctrl.chartObj = new Highcharts.StockChart(ctrl.chartData);
+							});
+						}
 				});
 			}
 		};

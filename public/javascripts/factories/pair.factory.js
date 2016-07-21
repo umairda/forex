@@ -49,16 +49,7 @@
 			
 			this.dbStartDate = 0;
 			this.dbEndDate = 0;
-			
-			/* I thought about breaking up readAndStore into separate "read" and "store" functions for easier testing
-			this.read = function() {
-				var _this = this;
-				var c1 = this.c1;
-				var c2 = this.c2;
-				var pair = c1+c2;
-			}
-			*/
-			
+						
 			this.readAndStore = function() {
 				var _this = this;
 				var c1 = this.c1;
@@ -77,7 +68,6 @@
 						if (fileResponse.data && fileResponse.data.success) {
 							var promise = dbHandler.storeArray(pair,fileResponse.data.data,[]);
 							promise.then(function(dbResponse) {
-								console.log('dbResponse',dbResponse);
 								var recordsAdded=0;
 								for (var i=0; i<dbResponse.length; i++) {
 									console.log('dbResponse[i].data.status',dbResponse[i].data.status);

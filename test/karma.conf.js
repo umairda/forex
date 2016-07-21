@@ -4,6 +4,10 @@ module.exports = function(config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: './',
 
+	client: {
+		captureConsole: true,
+	},
+	
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -21,9 +25,12 @@ module.exports = function(config) {
 	  '../public/bower_components/jasmine/lib/jasmine-core/jasmine.js',	  
 	  '../public/bower_components/jquery/dist/jquery.js',
 	  '../public/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+	  '../public/bower_components/bootstrap/dist/js/bootstrap.min.js',
+	  '../public/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+	  '../public/bower_components/highcharts/highstock5.js',
 	  '../public/javascripts/*.js',
-	  '../public/javascripts/factories/*.js',
-	  '../public/components/**/*.js',
+	  '../public/javascripts/**/*.js',	  
+	  '../public/views/*.html',
 	  'unit/**/*.js',
 	  {pattern: 'mock/*.json', watched: true, served: true, included: false}
     ],
@@ -35,13 +42,29 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+		"../public/views/**/*.html": ["ng-html2js"],
+		"../public/views/*.html": ["ng-html2js"],		
     },
 
+	ngHtml2JsPreprocessor: {
+//		stripPrefix: "../public", 
+//		prependPrefix: "/", 
 
+		cacheIdFromPath: function(filepath) {
+			var fileparts = filepath.split(/views/)
+			filepath = '/views'+fileparts[1];
+			console.log('filepath',filepath);
+			
+			return filepath;
+		},
+	
+		moduleName: "my.templates",
+	},	
+	
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress','junit'],
+    reporters: ['progress'],
 
 
     // web server port
@@ -76,7 +99,8 @@ module.exports = function(config) {
 	plugins: [	'karma-chrome-launcher',
 				'karma-firefox-launcher',
 				'karma-jasmine',
-				'karma-junit-reporter' ],
+				'karma-ng-html2js-preprocessor',
+				'karma-html2js-preprocessor'],
 	
 	junitReporter: {
 		outputFile: 'test_out_unit.xml',

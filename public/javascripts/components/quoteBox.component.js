@@ -49,8 +49,6 @@
 			instrument: '@',
 		},
 		controller: quoteBoxController,
-		templateUrl: "./components/quote_box/quote_box.html",
+		templateUrl: "/views/quoteBox.component.html",
 	});
-	
-	//quoteBoxController.$inject(['dbHandler','$scope']);
 })();

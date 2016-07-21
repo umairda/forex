@@ -20,24 +20,6 @@
 		vm.update = '';
 		
 		vm.init = function() {
-			/*var complete=0;
-			//return $q(function(resolve,reject) {
-				for (var i=0; i<vm.currencies.length; i++) {
-					var c1 = vm.currencies[i];
-					vm.pairs[c1] = [];
-					for (var j=0; j<vm.currencies.length; j++) {
-						var c2 = vm.currencies[j];
-						vm.pairs[c1][c2]=new pairObjFactory.pairObj(c1,c2,0);
-						console.log(c1,c2," setting dates");
-						vm.pairs[c1][c2].setDates().then(function(param) {
-							console.log(param," dates set");
-							complete++;
-							//if (complete>vm.currencies.length*vm.currencies.length-1) resolve(1);
-						});
-					}
-				}
-			//});
-			*/
 			var queue = [];
 			for (var i=0; i<vm.currencies.length; i++) {
 					var c1 = vm.currencies[i];
@@ -49,11 +31,9 @@
 						queue.push(vm.pairs[c1][c2].setDates());
 					}
 			}
-			$q.all(queue).then(function() {
+			return $q.all(queue).then(function() {
 				console.log('complete');
 			});
-			
-			
 		};
 		
 		vm.readAndStore = function(c1,c2) {

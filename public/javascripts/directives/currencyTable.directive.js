@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	var currencyTableController = function(dbHandler,Pair,$q,$scope) {
+	var currencyTableController = function(Pair,$q,$scope) {
 		var vm = this;
 		vm.pairs = [];
 		//vm.period = 60;
@@ -9,10 +9,9 @@
 		vm.fillTable = function() {
 			var complete=0;
 			return $q(function(resolve,reject) {
-				if (vm.currencies) {
+				if (vm.currencies.length>0) {
 					var isComplete = function() {
-						complete++;
-						if (complete>(vm.currencies.length*(vm.currencies.length-1)-1)) 
+						if (++complete>(vm.currencies.length*(vm.currencies.length-1)-1)) 
 						{
 							resolve(complete);
 						}
@@ -24,8 +23,8 @@
 						for (var j=0; j<vm.currencies.length; j++) {
 							var c2 = vm.currencies[j];
 							//if (typeof vm.pairs[c1][c2] === 'undefined') 
-							vm.pairs[c1][c2]=new Pair.obj(c1,c2,vm.period);
 							if (c1!==c2) {
+								vm.pairs[c1][c2]=new Pair.obj(c1,c2,vm.period);
 								vm.pairs[c1][c2].period = vm.period;							
 								vm.pairs[c1][c2].setDifference().finally(isComplete);
 							}
@@ -123,13 +122,18 @@
 				vm.update();
 			}
 		});
-		$scope.$watch(function(scope) { return vm.currencies; }, vm.update);
+		$scope.$watch(function(scope) { return vm.currencies; }, function(newValue,oldValue) {
+			vm.update();
+		});
+		$scope.$watch(function(scope) { return vm.currencies.length; }, function(newValue,oldValue) {
+			vm.update();
+		});
 	};
 	
-	angular.module('forex.directives').directive('currencyTable', function(dbHandler) {
+	angular.module('forex.directives').directive('currencyTable', function() {
 		return {
 			restrict: 'E',
-			templateUrl: '/directives/currency_table/currency_table.html',
+			templateUrl: '/views/currencyTable.directive.html',
 			controller: currencyTableController,
 			controllerAs: 'ctrl',
 			scope: {
@@ -138,8 +142,6 @@
 				selected: "=selected",
 			},
 			bindToController: true,
-			transclude: true,
-			replace: true,
 		};
 	});
 })();

@@ -1,7 +1,7 @@
 'use strict'
 
-describe('pairObjFactory', function () {
-  var pairObjFactory=null, 
+describe('Pair', function () {
+  var Pair=null, 
 	  //$dbHandler=null,
 	  $httpBackend, injector, $q, $scope;
   var dbHandlerMock;
@@ -20,7 +20,7 @@ describe('pairObjFactory', function () {
 	$q = $injector.get('$q');
 	$scope = $injector.get('$rootScope').$new();
 	jasmine.getJSONFixtures().fixturesPath='c:/projects/mean/forex/test/mock/';
-	//mockData = getJSONFixture('pairObj.spec.mockdata.json');
+	//mockData = getJSONFixture('pair.spec.mockdata.json');
 	
 	dbHandlerMock = {
 		getDatesCalled:false,
@@ -41,16 +41,19 @@ describe('pairObjFactory', function () {
 			});
 		},
 	};
-	pairObjFactory=$injector.get('pairObjFactory');
+	Pair=$injector.get('Pair');
   }));
   
   it('can get an instance of my factory', function() {
-    expect(pairObjFactory).toBeDefined();
-	expect(pairObjFactory.pairObj).toBeDefined();
+    expect(Pair).toBeDefined();
+  });
+  
+  it('can get an instance of the obj member of my factory', function() {
+	expect(Pair.obj).toBeDefined();
   });
   
   it('can accept 0 arguments', function() {
-	var obj = new pairObjFactory.pairObj();
+	var obj = new Pair.obj();
 	expect(obj).toBeDefined();
 	expect(obj.c1).toBe('eur');
 	expect(obj.c2).toBe('usd');
@@ -59,7 +62,7 @@ describe('pairObjFactory', function () {
   });
   
   it('can accept 1 argument: pair', function() {
-	var obj = new pairObjFactory.pairObj('audusd');
+	var obj = new Pair.obj('audusd');
 	expect(obj).toBeDefined();
 	expect(obj.c1).toBe('aud');
 	expect(obj.c2).toBe('usd');
@@ -67,7 +70,7 @@ describe('pairObjFactory', function () {
   });
   
   it('can accept 2 arguments: pair, period', function() {
-	var obj = new pairObjFactory.pairObj('gbpjpy',30);
+	var obj = new Pair.obj('gbpjpy',30);
 	expect(obj).toBeDefined();
 	expect(obj.c1).toBe('gbp');
 	expect(obj.c2).toBe('jpy');
@@ -75,14 +78,14 @@ describe('pairObjFactory', function () {
   });
   
   it('can accept 2 arguments: c1, c2', function() {
-	var obj = new pairObjFactory.pairObj('cad','chf');
+	var obj = new Pair.obj('cad','chf');
 	expect(obj).toBeDefined();
 	expect(obj.pair).toBe('cadchf');
 	expect(obj.period).toBe(60); 
   });
   
   it('can accept 3 arguments: c1, c2, period', function() {
-	var obj = new pairObjFactory.pairObj('nzd','usd',15);
+	var obj = new Pair.obj('nzd','usd',15);
 	expect(obj).toBeDefined();
 	expect(obj.c1).toBe('nzd');
 	expect(obj.c2).toBe('usd');
@@ -91,14 +94,14 @@ describe('pairObjFactory', function () {
   });
   
   it('can read from the data file and store to the db - readAndStore()', function(done) {
-	var obj = new pairObjFactory.pairObj();
+	var obj = new Pair.obj();
 		var _data = [{	"1":{  	"Date":"1993/05/11",
-								"Open":"1.2414",
-								"High":"1.2416",
-                                "Low":"1.2376",
-                                "Close":"1.2378",
-                                "Volume":"0",
-                                "OpenInterest":"0"},
+											"Open":"1.2414",
+											"High":"1.2416",
+											"Low":"1.2376",
+											"Close":"1.2378",
+											"Volume":"0",
+											"OpenInterest":"0"},
 						"2":{  "Date":"1993/05/12",
                                             "Open":"1.2378",
                                             "High":"1.238",
@@ -130,7 +133,7 @@ describe('pairObjFactory', function () {
   
   
   it('can set the dbStartDate and dbEndDate variables - setDates()', function(done) {
-	var obj = new pairObjFactory.pairObj();
+	var obj = new Pair.obj();
 	$httpBackend.when('GET','/getDates/'+obj.pair)
 				.respond(200,{	"start":
 									{	"instrument":"eurusd",
@@ -170,7 +173,7 @@ describe('pairObjFactory', function () {
 								"volume":186049},
 							"pct_diff":"0.90"	});
 	
-	var obj = new pairObjFactory.pairObj();
+	var obj = new Pair.obj();
 	
 	obj.setDifference().finally(function() {
 		expect(+obj.difference).toBe(0.90);

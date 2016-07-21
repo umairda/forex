@@ -42,7 +42,7 @@
 	angular.module('forex.components').component('loading', {
 		bindings: {},
 		controller: loadingCtrl,
-		templateUrl: '/components/loading/loading.html'
+		templateUrl: '/views/loading.component.html'
 	});
 
 	loadingCtrl.$inject = ['$rootScope','$timeout'];

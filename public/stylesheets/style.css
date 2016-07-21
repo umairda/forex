@@ -5902,7 +5902,7 @@ button.close {
   background-color: transparent;
   border: 0; }
 
-.hidden {
+.hidden, .quote_box table ._instrument {
   display: none !important; }
 
 .affix {
@@ -6855,10 +6855,6 @@ input.highcharts-range-selector {
     border-color: rgba(51, 51, 51, 0.3); }
     .quote_box table td {
       text-align: center; }
-    .quote_box table ._instrument {
-      display: none; }
-    .quote_box table ._date._key {
-      visibility: hidden; }
     .quote_box table ._high {
       background-color: rgba(0, 255, 0, 0.2); }
     .quote_box table ._low {
