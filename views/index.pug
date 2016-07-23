@@ -1,0 +1,14 @@
+extends ./layout.pug
+
+block pageContent
+	div(ng-controller="IndexController as IndexCtrl", class="container-fluid main_content")
+		div(class="row")
+			currency-table(currencies="IndexCtrl.currencies", period="IndexCtrl.period", selected="IndexCtrl.pair")
+			highchart(pair="IndexCtrl.pair")
+		div(class="row match-my-cols")
+			div(class="quote_box_wrapper")
+				div(class="row")
+					div(class="col-xs-4" ng-repeat="pair in ['audusd','eurusd','gbpusd','nzdusd','usdcad','usdjpy']")
+						quote-box(instrument="{{pair}}")
+			feed(rssfeed="IndexCtrl.rssfeed")
+						

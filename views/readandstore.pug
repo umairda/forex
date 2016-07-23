@@ -1,0 +1,18 @@
+extends ./layout.pug
+
+block pageContent
+	.main_content
+		div(ng-controller='readAndStoreController as rasCtrl')
+			table.table.table-responsive
+				thead
+					tr
+						th
+						th.text-center(ng-repeat='c1 in rasCtrl.currencies') {{c1}}
+				tbody
+					tr(ng-repeat='c1 in rasCtrl.currencies', ng-class-odd="'odd'", ng-class-even="'even'")
+						td.text-center {{c1}}
+						td.text-center(title='{{c1}}{{c2}}', ng-repeat='c2 in rasCtrl.currencies', ng-click='rasCtrl.readAndStore(c1,c2)', ng-init='rasCtrl.pairs[c1][c2].setDates()')
+							span
+								.green {{rasCtrl.pairs[c1][c2].dbStartDate}}
+								.red {{rasCtrl.pairs[c1][c2].dbEndDate}}
+			.update(ng-bind-html='rasCtrl.update')
